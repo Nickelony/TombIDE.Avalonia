@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Models\" />
+    <Folder Include="ViewModels\" />
+    <Folder Include="Views\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="0.10.7" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.7" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.7" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.7" />
+    <PackageReference Include="AvaloniaSpacedGrid" Version="0.10.4" />
+    <PackageReference Include="FluentAvaloniaUI" Version="1.1.2" />
+    <PackageReference Include="ReactiveUI.Fody" Version="16.2.6" />
+    <PackageReference Include="ReactiveUI.Validation" Version="2.1.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TombIDE.Avalonia.Core\TombIDE.Avalonia.Core.csproj" />
+    <ProjectReference Include="..\TombIDE.Avalonia.LevelManager\TombIDE.Avalonia.LevelManager.csproj" />
+    <ProjectReference Include="..\TombIDE.Avalonia.ProjectSettings\TombIDE.Avalonia.ProjectSettings.csproj" />
+    <ProjectReference Include="..\TombIDE.Avalonia.ScriptingStudio\TombIDE.Avalonia.ScriptingStudio.csproj" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="0.10.7" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.7" />
+    <PackageReference Include="Avalonia.Diagnostics" Version="0.10.7" />
+   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ScriptLib.ClassicScript\ScriptLib.ClassicScript.csproj" />
+    <ProjectReference Include="..\ScriptLib.Core.Views\ScriptLib.Core.Views.csproj" />
+  </ItemGroup>
+</Project>
