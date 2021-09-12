@@ -10,4 +10,9 @@
   <ItemGroup>
     <ProjectReference Include="..\ScriptLib.Core\ScriptLib.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="AvaloniaEdit">
+      <HintPath>..\Libs\AvaloniaEdit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

@@ -8,8 +8,14 @@
     <PackageReference Include="Avalonia" Version="0.10.7" />
     <PackageReference Include="Avalonia.Desktop" Version="0.10.7" />
     <PackageReference Include="Avalonia.Diagnostics" Version="0.10.7" />
+    <PackageReference Include="AvaloniaSpacedGrid" Version="0.10.4" />
    </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ScriptLib.Core\ScriptLib.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="AvaloniaEdit">
+      <HintPath>..\Libs\AvaloniaEdit.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

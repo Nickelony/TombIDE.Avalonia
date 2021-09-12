@@ -1,0 +1,175 @@
+<Window
+	x:Class="ScriptLib.Core.Views.FindReplaceWindow"
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:sg="clr-namespace:AvaloniaSpacedGrid;assembly=AvaloniaSpacedGrid"
+	Title="FindReplaceWindow"
+	d:DesignWidth="720"
+	SizeToContent="Height"
+	mc:Ignorable="d">
+	<sg:SpacedGrid
+		Margin="15"
+		RowDefinitions="*, *, Auto, Auto"
+		RowSpacing="15">
+		<sg:SpacedGrid
+			ColumnDefinitions="Auto, *, Auto, Auto, Auto"
+			ColumnSpacing="5"
+			RowDefinitions="Auto, Auto"
+			RowSpacing="10">
+			<TextBlock
+				Grid.Row="0"
+				Grid.Column="0"
+				VerticalAlignment="Center"
+				Text="Find:"
+				TextAlignment="Right" />
+			<TextBox Grid.Row="0" Grid.Column="1" />
+			<Button
+				Grid.Row="0"
+				Grid.Column="2"
+				VerticalAlignment="Stretch"
+				VerticalContentAlignment="Center"
+				Content="◀" />
+			<Button
+				Grid.Row="0"
+				Grid.Column="3"
+				Width="100"
+				VerticalAlignment="Stretch"
+				HorizontalContentAlignment="Center"
+				VerticalContentAlignment="Center"
+				Content="Find" />
+			<Button
+				Grid.Row="0"
+				Grid.Column="4"
+				VerticalAlignment="Stretch"
+				VerticalContentAlignment="Center"
+				Content="▶" />
+
+			<TextBlock
+				Grid.Row="1"
+				Grid.Column="0"
+				VerticalAlignment="Center"
+				Text="Replace:"
+				TextAlignment="Right" />
+			<TextBox Grid.Row="1" Grid.Column="1" />
+			<Button
+				Grid.Row="1"
+				Grid.Column="2"
+				VerticalAlignment="Stretch"
+				VerticalContentAlignment="Center"
+				Content="◀" />
+			<Button
+				Grid.Row="1"
+				Grid.Column="3"
+				Width="100"
+				VerticalAlignment="Stretch"
+				HorizontalContentAlignment="Center"
+				VerticalContentAlignment="Center"
+				Content="Replace" />
+			<Button
+				Grid.Row="1"
+				Grid.Column="4"
+				VerticalAlignment="Stretch"
+				VerticalContentAlignment="Center"
+				Content="▶" />
+		</sg:SpacedGrid>
+
+		<sg:SpacedGrid
+			Grid.Row="1"
+			ColumnDefinitions="* 2*"
+			ColumnSpacing="5">
+			<Border
+				Grid.Column="0"
+				Padding="10"
+				BorderBrush="{StaticResource DefaultBorder}"
+				BorderThickness="1"
+				CornerRadius="3">
+				<Grid RowDefinitions="*, *">
+					<TextBlock
+						Grid.Row="0"
+						Margin="0,0,0,5"
+						Text="Search Direction" />
+					<Grid Grid.Row="1" ColumnDefinitions="*, *">
+						<RadioButton Grid.Column="0" Content="Up" />
+						<RadioButton Grid.Column="1" Content="Down" />
+					</Grid>
+				</Grid>
+			</Border>
+			<Border
+				Grid.Column="1"
+				Padding="10"
+				BorderBrush="{StaticResource DefaultBorder}"
+				BorderThickness="1"
+				CornerRadius="3">
+				<sg:SpacedGrid ColumnDefinitions="* *" ColumnSpacing="5">
+					<Button
+						Grid.Column="0"
+						HorizontalAlignment="Stretch"
+						VerticalAlignment="Stretch"
+						HorizontalContentAlignment="Center"
+						VerticalContentAlignment="Center"
+						Content="Find All" />
+					<Button
+						Grid.Column="1"
+						HorizontalAlignment="Stretch"
+						VerticalAlignment="Stretch"
+						HorizontalContentAlignment="Center"
+						VerticalContentAlignment="Center"
+						Content="Replace All" />
+				</sg:SpacedGrid>
+			</Border>
+		</sg:SpacedGrid>
+
+		<sg:SpacedGrid
+			Grid.Row="2"
+			ColumnDefinitions="* * *"
+			ColumnSpacing="5">
+			<Border
+				Grid.Column="0"
+				Padding="10"
+				BorderBrush="{StaticResource DefaultBorder}"
+				BorderThickness="1"
+				CornerRadius="3">
+				<StackPanel>
+					<TextBlock Margin="0,0,0,5" Text="Options" />
+					<CheckBox Content="Case sensitive" />
+					<CheckBox Content="Match whole words" />
+				</StackPanel>
+			</Border>
+			<Border
+				Grid.Column="1"
+				Padding="10"
+				BorderBrush="{StaticResource DefaultBorder}"
+				BorderThickness="1"
+				CornerRadius="3">
+				<Grid RowDefinitions="*, *">
+					<StackPanel>
+						<TextBlock Margin="0,0,0,5" Text="Mode" />
+						<RadioButton Content="Normal" />
+						<RadioButton Content="Regular Expressions" />
+					</StackPanel>
+				</Grid>
+			</Border>
+			<Border
+				Grid.Column="2"
+				Padding="10"
+				BorderBrush="{StaticResource DefaultBorder}"
+				BorderThickness="1"
+				CornerRadius="3">
+				<StackPanel>
+					<TextBlock Margin="0,0,0,5" Text="Where to look" />
+					<RadioButton Content="Current document" />
+					<RadioButton Content="All opened tabs" />
+				</StackPanel>
+			</Border>
+		</sg:SpacedGrid>
+		<Border
+			Grid.Row="3"
+			Padding="5,5,5,0"
+			BorderBrush="{StaticResource DefaultBorder}"
+			BorderThickness="0,1,0,0">
+			<TextBlock Foreground="LightGreen" Text="Status" />
+		</Border>
+	</sg:SpacedGrid>
+</Window>

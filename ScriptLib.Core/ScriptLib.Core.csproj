@@ -7,4 +7,9 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.10.7" />
    </ItemGroup>
+  <ItemGroup>
+    <Reference Include="AvaloniaEdit">
+      <HintPath>..\Libs\AvaloniaEdit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

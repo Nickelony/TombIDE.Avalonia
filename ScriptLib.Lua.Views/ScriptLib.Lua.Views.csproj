@@ -5,6 +5,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\GlobalPaths.cs" Link="GlobalPaths.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.10.7" />
     <PackageReference Include="Avalonia.Desktop" Version="0.10.7" />
     <PackageReference Include="Avalonia.Diagnostics" Version="0.10.7" />
@@ -12,5 +15,10 @@
   <ItemGroup>
     <ProjectReference Include="..\ScriptLib.Core.Views\ScriptLib.Core.Views.csproj" />
     <ProjectReference Include="..\ScriptLib.Lua\ScriptLib.Lua.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="AvaloniaEdit">
+      <HintPath>..\Libs\AvaloniaEdit.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>
