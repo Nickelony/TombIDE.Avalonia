@@ -1,0 +1,33 @@
+<TemplatedControl
+	x:Class="TombIDE.Avalonia.Core.Views.LogoView"
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:ctrl="clr-namespace:TombIDE.Avalonia.Core.Views"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	mc:Ignorable="d">
+
+	<TemplatedControl.Styles>
+		<Style Selector="ctrl|LogoView">
+			<Setter Property="Template">
+				<ControlTemplate>
+					<StackPanel Orientation="Horizontal">
+						<Image
+							Width="48"
+							Margin="0,0,5,0"
+							Source="avares://TombIDE.Avalonia.Core/Assets/TIDE.png" />
+						<TextBlock
+							VerticalAlignment="Center"
+							FontSize="24"
+							Text="Tomb" />
+						<TextBlock
+							VerticalAlignment="Center"
+							FontSize="24"
+							FontWeight="Bold"
+							Text="IDE" />
+					</StackPanel>
+				</ControlTemplate>
+			</Setter>
+		</Style>
+	</TemplatedControl.Styles>
+</TemplatedControl>

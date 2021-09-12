@@ -1,0 +1,32 @@
+<Button
+	x:Class="TombIDE.Avalonia.Core.Views.JumboButton"
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:ctrl="clr-namespace:TombIDE.Avalonia.Core.Views"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:ui="using:FluentAvalonia.UI.Controls"
+	mc:Ignorable="d">
+
+	<Button.Styles>
+		<Style Selector="ctrl|JumboButton">
+			<Setter Property="Template">
+				<ControlTemplate>
+					<Button
+						Width="340"
+						Height="80"
+						HorizontalContentAlignment="Left"
+						VerticalContentAlignment="Center"
+						Command="{TemplateBinding Command}">
+						<ctrl:ImageTextView
+							Margin="10,0,0,0"
+							Header="{TemplateBinding Header}"
+							ImageSource="{TemplateBinding ImageSource}"
+							Note="{TemplateBinding Note}"
+							PathData="{TemplateBinding PathData}" />
+					</Button>
+				</ControlTemplate>
+			</Setter>
+		</Style>
+	</Button.Styles>
+</Button>

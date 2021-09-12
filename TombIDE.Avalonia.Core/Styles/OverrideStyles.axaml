@@ -1,0 +1,27 @@
+﻿<Styles xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<Design.PreviewWith>
+		<Border Padding="20">
+			<!--  Add Controls for Previewer Here  -->
+		</Border>
+	</Design.PreviewWith>
+
+	<Style Selector="TreeView /template/ Border">
+		<Setter Property="CornerRadius" Value="3" />
+	</Style>
+
+	<Style Selector="TreeView TreeViewItem /template/ Border">
+		<Setter Property="CornerRadius" Value="3" />
+	</Style>
+
+	<Style Selector="Button">
+		<Setter Property="VerticalContentAlignment" Value="Center" />
+	</Style>
+
+	<Style Selector="Button:pressed, RepeatButton:pressed, ToggleButton:pressed">
+		<Setter Property="RenderTransform" Value="scale(1)" />
+	</Style>
+
+	<Style Selector="ComboBox /template/ TextBlock#PlaceholderTextBlock">
+		<Setter Property="Opacity" Value="0.5" />
+	</Style>
+</Styles>

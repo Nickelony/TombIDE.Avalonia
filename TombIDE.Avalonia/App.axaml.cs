@@ -1,6 +1,9 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using FluentAvalonia.Styling;
+using TombIDE.Avalonia.ViewModels;
+using TombIDE.Avalonia.Views.Windows;
 
 namespace TombIDE.Avalonia
 {
@@ -15,9 +18,9 @@ namespace TombIDE.Avalonia
 		{
 			if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
 			{
-				desktop.MainWindow = new MainWindow
+				desktop.MainWindow = new StartWindow
 				{
-					DataContext = new MainWindowViewModel(),
+					DataContext = new StartWindowViewModel(),
 				};
 			}
 
