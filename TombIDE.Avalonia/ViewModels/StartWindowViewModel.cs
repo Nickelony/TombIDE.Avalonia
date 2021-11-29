@@ -1,13 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ReactiveUI.Fody.Helpers;
 using TombIDE.Avalonia.Core.ViewModels;
 
 namespace TombIDE.Avalonia.ViewModels
 {
-	public class StartWindowViewModel : ViewModelBase
+	internal class StartWindowViewModel : ViewModelBase
 	{
+		[Reactive] public ViewModelBase Content { get; set; }
+
+		public StartPageViewModel StartPage { get; }
+
+		public StartWindowViewModel()
+		{
+			Content = StartPage = new StartPageViewModel(this);
+		}
+
+		public void ShowCreateNewProjectView() => Content = new NewProjectHostViewModel(this);
+
+		public void ShowProjectSelectionView() => Content = StartPage;
 	}
 }

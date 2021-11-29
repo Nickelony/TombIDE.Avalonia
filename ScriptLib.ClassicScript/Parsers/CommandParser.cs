@@ -15,34 +15,11 @@ using System.Text.RegularExpressions;
 
 namespace ScriptLib.ClassicScript.Parsers
 {
-	public enum CommentHandling
-	{
-		Keep,
-		Escape,
-		Remove
-	}
-
 	public static class CommandParser
 	{
-		#region Public methods
+		#region Extension methods
 
-		public static string? GetCommandSyntax(string commandKey)
-		{
-			var resources = GetCommandSyntaxResources();
-
-			int commandEntryIndex = resources.FindIndex(x =>
-			{
-				string? key = x.Key.ToString();
-				return key != null && key.Equals(commandKey, StringComparison.OrdinalIgnoreCase);
-			});
-
-			if (commandEntryIndex == -1)
-				return null;
-
-			return resources[commandEntryIndex].Value?.ToString();
-		}
-
-		public static string? GetCommandSyntaxFromOffset(TextDocument document, int offset)
+		public static string? GetCommandSyntaxFromOffset(this TextDocument document, int offset)
 		{
 			string? wholeCommandLineText = GetWholeCommandLineTextFromOffset(document, offset, CommentHandling.Escape);
 
@@ -50,9 +27,13 @@ namespace ScriptLib.ClassicScript.Parsers
 				return null;
 
 			if (IsValidCustomizeCommand(wholeCommandLineText, out string firstCustParam))
+			{
 				return GetSubcommandSyntax(SubcommandType.Cust, firstCustParam);
+			}
 			else if (IsValidParametersCommand(wholeCommandLineText, out string firstParamParam))
+			{
 				return GetSubcommandSyntax(SubcommandType.Param, firstParamParam);
+			}
 			else
 			{
 				string? commandKey = GetCommandKeyFromOffset(document, offset);
@@ -64,26 +45,10 @@ namespace ScriptLib.ClassicScript.Parsers
 			}
 		}
 
-		public static bool IsValidCustomizeCommand(string lineText, out string firstParam)
-		{
-			var customizeMatch = Regex.Match(lineText, Patterns.CustomizeCommandWithFirstArg, RegexOptions.IgnoreCase);
-
-			firstParam = customizeMatch.Success ? customizeMatch.Groups[2].Value : string.Empty;
-			return firstParam != string.Empty;
-		}
-
-		public static bool IsValidParametersCommand(string lineText, out string firstParam)
-		{
-			var parametersMatch = Regex.Match(lineText, Patterns.ParametersCommandWithFirstArg, RegexOptions.IgnoreCase);
-
-			firstParam = parametersMatch.Success ? parametersMatch.Groups[2].Value : string.Empty;
-			return firstParam != string.Empty;
-		}
-
 		/// <summary>
 		/// Merges all lines of a single command into one string (Handles multi-line character ">").
 		/// </summary>
-		public static string? GetWholeCommandLineTextFromOffset(TextDocument document, int offset, CommentHandling ch)
+		public static string? GetWholeCommandLineTextFromOffset(this TextDocument document, int offset, CommentHandling ch)
 		{
 			DocumentLine? commandStartLine = GetCommandStartLineFromOffset(document, offset);
 
@@ -112,7 +77,7 @@ namespace ScriptLib.ClassicScript.Parsers
 		/// <summary>
 		/// Gets the starting line of a command. Mainly used to find the starting point of a multi-line command (Handled via ">").
 		/// </summary>
-		public static DocumentLine? GetCommandStartLineFromOffset(TextDocument document, int offset)
+		public static DocumentLine? GetCommandStartLineFromOffset(this TextDocument document, int offset)
 		{
 			DocumentLine offsetLine = document.GetLineByOffset(offset);
 			string offsetLineText = document.GetText(offsetLine);
@@ -133,7 +98,7 @@ namespace ScriptLib.ClassicScript.Parsers
 			return FindCommandStartLine(document, offsetLine);
 		}
 
-		public static string? GetCommandKeyFromOffset(TextDocument document, int offset)
+		public static string? GetCommandKeyFromOffset(this TextDocument document, int offset)
 		{
 			DocumentLine? commandStartLine = GetCommandStartLineFromOffset(document, offset);
 
@@ -160,6 +125,63 @@ namespace ScriptLib.ClassicScript.Parsers
 			return null;
 		}
 
+		public static string? GetFullIncludePathFromOffset(this TextDocument document, int offset)
+		{
+			DocumentLine caretLine = document.GetLineByOffset(offset);
+			string caretLineText = document.GetText(caretLine);
+
+			var match = Regex.Match(caretLineText, Patterns.IncludeWithValue);
+
+			if (match.Success)
+			{
+				string? rootPath = Path.GetDirectoryName(document.FileName);
+
+				if (rootPath != null)
+				{
+					string secondPathPart = match.Groups[2].Value.Trim(); // {#INCLUDE " file.txt "} >> {file.txt}
+					return Path.Combine(rootPath, secondPathPart);
+				}
+			}
+
+			return null;
+		}
+
+		#endregion Extension methods
+
+		#region Public methods
+
+		public static string? GetCommandSyntax(string commandKey)
+		{
+			var resources = GetCommandSyntaxResources();
+
+			int commandEntryIndex = resources.FindIndex(x =>
+			{
+				string? key = x.Key.ToString();
+				return key != null && key.Equals(commandKey, StringComparison.OrdinalIgnoreCase);
+			});
+
+			if (commandEntryIndex == -1)
+				return null;
+
+			return resources[commandEntryIndex].Value?.ToString();
+		}
+
+		public static bool IsValidCustomizeCommand(string lineText, out string firstParam)
+		{
+			var customizeMatch = Regex.Match(lineText, Patterns.CustomizeCommandWithFirstArg, RegexOptions.IgnoreCase);
+
+			firstParam = customizeMatch.Success ? customizeMatch.Groups[2].Value : string.Empty;
+			return firstParam != string.Empty;
+		}
+
+		public static bool IsValidParametersCommand(string lineText, out string firstParam)
+		{
+			var parametersMatch = Regex.Match(lineText, Patterns.ParametersCommandWithFirstArg, RegexOptions.IgnoreCase);
+
+			firstParam = parametersMatch.Success ? parametersMatch.Groups[2].Value : string.Empty;
+			return firstParam != string.Empty;
+		}
+
 		public static List<DictionaryEntry> GetCommandSyntaxResources()
 		{
 			var entries = new List<DictionaryEntry>();
@@ -179,27 +201,6 @@ namespace ScriptLib.ClassicScript.Parsers
 				entries.AddRange(newCommandResourceSet.Cast<DictionaryEntry>().ToList());
 
 			return entries;
-		}
-
-		public static string? GetFullIncludePath(TextDocument document, int offset)
-		{
-			DocumentLine caretLine = document.GetLineByOffset(offset);
-			string caretLineText = document.GetText(caretLine);
-
-			var match = Regex.Match(caretLineText, Patterns.IncludeWithValue);
-
-			if (match.Success)
-			{
-				string? rootPath = Path.GetDirectoryName(document.FileName);
-
-				if (rootPath != null)
-				{
-					string secondPathPart = match.Groups[2].Value.Trim(); // {#INCLUDE " file.txt "} >> {file.txt}
-					return Path.Combine(rootPath, secondPathPart);
-				}
-			}
-
-			return null;
 		}
 
 		#endregion Public methods

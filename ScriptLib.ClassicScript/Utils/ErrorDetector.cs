@@ -1,5 +1,6 @@
 ﻿using AvaloniaEdit.Document;
 using ScriptLib.ClassicScript.Data;
+using ScriptLib.ClassicScript.Data.Enums;
 using ScriptLib.ClassicScript.Parsers;
 using ScriptLib.Core.Utils;
 using System;

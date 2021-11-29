@@ -1,5 +1,5 @@
-<Window
-	x:Class="TombIDE.Avalonia.Views.Windows.StartWindow"
+<UserControl
+	x:Class="TombIDE.Avalonia.Views.StartPageView"
 	xmlns="https://github.com/avaloniaui"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:core="clr-namespace:TombIDE.Avalonia.Core.Views;assembly=TombIDE.Avalonia.Core"
@@ -7,13 +7,11 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:sg="clr-namespace:AvaloniaSpacedGrid;assembly=AvaloniaSpacedGrid"
 	xmlns:ui="using:FluentAvalonia.UI.Controls"
-	xmlns:vm="using:TombIDE.Avalonia.ViewModels"
-	Title="StartWindow"
 	d:DesignHeight="450"
 	d:DesignWidth="800"
 	mc:Ignorable="d">
 
-	<Window.DataTemplates>
+	<UserControl.DataTemplates>
 		<DataTemplate DataType="{x:Type TreeViewItem}">
 			<StackPanel Orientation="Horizontal">
 				<ui:ImageIcon
@@ -23,8 +21,7 @@
 				<TextBlock VerticalAlignment="Center" Text="My Project" />
 			</StackPanel>
 		</DataTemplate>
-	</Window.DataTemplates>
-
+	</UserControl.DataTemplates>
 
 	<sg:SpacedGrid
 		Margin="30"
@@ -32,21 +29,15 @@
 		ColumnSpacing="20"
 		RowDefinitions="Auto, *, Auto"
 		RowSpacing="20">
-		<core:LogoView
-			Grid.Row="0"
-			Grid.Column="0"
-			Grid.ColumnSpan="2" />
+		<core:LogoView Grid.ColumnSpan="2" />
 
-		<TreeView Grid.Row="1">
+		<TreeView Grid.Row="1" Items="{Binding RecentProjects}">
 			<TreeView.Styles>
 				<Style Selector="Border">
 					<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
 					<Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
 				</Style>
 			</TreeView.Styles>
-			<TreeViewItem />
-			<TreeViewItem />
-			<TreeViewItem />
 		</TreeView>
 
 		<StackPanel
@@ -54,27 +45,26 @@
 			Grid.Column="1"
 			Spacing="5">
 			<core:JumboButton
-				Command="{Binding CreateNewProjectCommand}"
-				Header="{Binding Strings.CreateNewProject}"
-				Note="Create a new playable level for your project"
+				Command="{Binding CreateNewProjectCmd}"
+				Header="Create a new project..."
+				Note="Create a new project and choose one of many available game templates."
 				PathData="{StaticResource new_regular}" />
 
 			<core:JumboButton
 				Command="{Binding CreateNewProjectCommand}"
-				Header="{Binding Strings.OpenTrprojFile}"
+				Header="Open .trproj file..."
 				Note="Open an existing TombIDE project"
 				PathData="{StaticResource folder_open_regular}" />
 
 			<core:JumboButton
 				Command="{Binding CreateNewProjectCommand}"
-				Header="{Binding Strings.ImportExe}"
+				Header="Import project from .exe file."
 				Note="Import legacy projects which weren't used with TombIDE yet"
 				PathData="{StaticResource open_folder_regular}" />
 		</StackPanel>
 
 		<Border
 			Grid.Row="2"
-			Grid.Column="0"
 			Grid.ColumnSpan="2"
 			Padding="15"
 			BorderBrush="{DynamicResource ButtonBorderBrush}"
@@ -86,5 +76,4 @@
 			</Grid>
 		</Border>
 	</sg:SpacedGrid>
-
-</Window>
+</UserControl>

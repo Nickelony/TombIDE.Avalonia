@@ -1,0 +1,105 @@
+<UserControl
+	x:Class="TombIDE.Avalonia.Views.NewProjectExtraOptionsView"
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:sg="clr-namespace:AvaloniaSpacedGrid;assembly=AvaloniaSpacedGrid"
+	xmlns:vm="using:TombIDE.Avalonia.ViewModels"
+	d:DesignHeight="450"
+	d:DesignWidth="800"
+	mc:Ignorable="d">
+	<UserControl.Styles>
+		<Style Selector="Button">
+			<Setter Property="HorizontalContentAlignment" Value="Center" />
+		</Style>
+	</UserControl.Styles>
+
+	<sg:SpacedGrid
+		Margin="30"
+		RowDefinitions="Auto, Auto, *"
+		RowSpacing="45">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="500" />
+			<ColumnDefinition />
+		</Grid.ColumnDefinitions>
+
+		<StackPanel Spacing="5">
+			<TextBlock FontSize="24" Text="{Binding Strings.CreateNewProject}" />
+			<TextBlock FontSize="12" Text="{Binding Strings.AdditionalOptions}" />
+		</StackPanel>
+
+		<StackPanel Grid.Row="1" Spacing="30">
+			<StackPanel.Styles>
+				<Style Selector="sg|SpacedGrid">
+					<Setter Property="ColumnSpacing" Value="5" />
+				</Style>
+			</StackPanel.Styles>
+
+			<StackPanel>
+				<RadioButton Content="{Binding Strings.ScriptFolderInsideProject}" IsChecked="True" />
+				<RadioButton
+					Margin="0,0,0,5"
+					Content="{Binding Strings.UseDifferentScriptLocation}"
+					IsChecked="{Binding UseCustomScriptLocation}" />
+
+				<sg:SpacedGrid ColumnDefinitions="*, Auto" IsEnabled="{Binding UseCustomScriptLocation}">
+					<TextBox Text="{Binding CustomScriptLocation}" Watermark="{Binding Strings.ScriptLocation}" />
+					<Button
+						Grid.Column="1"
+						Command="{Binding BrowseScriptLocationCommand}"
+						ToolTip.Tip="{Binding Strings.Browse}">
+						<PathIcon Data="{StaticResource folder_open_regular}" />
+					</Button>
+				</sg:SpacedGrid>
+			</StackPanel>
+
+			<StackPanel>
+				<RadioButton Content="{Binding Strings.MapsFolderInsideProject}" IsChecked="True" />
+				<RadioButton
+					Margin="0,0,0,5"
+					Content="{Binding Strings.UseDifferentMapsLocation}"
+					IsChecked="{Binding UseCustomMapsLocation}" />
+
+				<sg:SpacedGrid ColumnDefinitions="*, Auto" IsEnabled="{Binding UseCustomMapsLocation}">
+					<TextBox Text="{Binding CustomMapsLocation}" Watermark="{Binding Strings.MapsLocation}" />
+					<Button
+						Grid.Column="1"
+						Command="{Binding BrowseMapsLocationCommand}"
+						ToolTip.Tip="{Binding Strings.Browse}">
+						<PathIcon Data="{StaticResource folder_open_regular}" />
+					</Button>
+				</sg:SpacedGrid>
+			</StackPanel>
+
+			<StackPanel>
+				<CheckBox Content="{Binding Strings.IncludeOriginalAudioFiles}" IsChecked="{Binding IncludeAudioFolder}" />
+				<CheckBox Content="{Binding Strings.IncludeStockWads}" IsChecked="{Binding IncludeStockWads}" />
+				<CheckBox Content="{Binding Strings.UseLegacyProjectStructure}" IsChecked="{Binding UseLegacyProjectStructure}" />
+			</StackPanel>
+		</StackPanel>
+
+		<StackPanel
+			Grid.Row="2"
+			Grid.ColumnSpan="2"
+			HorizontalAlignment="Right"
+			VerticalAlignment="Bottom"
+			Orientation="Horizontal"
+			Spacing="5">
+			<StackPanel.Styles>
+				<Style Selector="Button">
+					<Setter Property="MinWidth" Value="80" />
+				</Style>
+			</StackPanel.Styles>
+
+			<Button
+				Command="{Binding BackCmd}"
+				Content="{Binding Strings.Back}"
+				IsCancel="True" />
+			<Button
+				Command="{Binding InstallCmd}"
+				Content="{Binding Strings.Create}"
+				IsDefault="True" />
+		</StackPanel>
+	</sg:SpacedGrid>
+</UserControl>

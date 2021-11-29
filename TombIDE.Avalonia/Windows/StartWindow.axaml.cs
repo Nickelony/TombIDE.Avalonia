@@ -1,13 +1,12 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using FluentAvalonia.Styling;
 
-namespace TombIDE.Avalonia.Views.Windows
+namespace TombIDE.Avalonia.Windows
 {
-	public partial class StartWindow : Window
+	public partial class StartWindowView : Window
 	{
-		public StartWindow()
+		public StartWindowView()
 		{
 			InitializeComponent();
 #if DEBUG

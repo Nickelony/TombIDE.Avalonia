@@ -16,14 +16,17 @@ namespace ScriptLib.ClassicScript.Data
 
 		public const string MnemonicConstantsXmlFileName = "MnemonicConstants.xml";
 
-		public static List<string> StandardConstants = new();
-		public static List<PluginConstant> PluginConstants = new();
+		public static List<string> StandardConstants { get; private set; } = new();
+		public static List<PluginConstant> PluginConstants { get; private set; } = new();
 
 		/// <summary>
 		/// All flags combined into one list.
 		/// </summary>
-		public static List<string> AllConstantFlags = new();
+		public static List<string> AllConstantFlags { get; private set; } = new();
 
+		/// <summary>
+		/// Sets up mnemonic constants for runtime use. Scans both built-in constants and installed project plugins' constants.
+		/// </summary>
 		/// <param name="ngcDir">The directory where the target NG_Center.exe file is being stored.</param>
 		/// <param name="referencesDir">The directory where reference definitions (in .xml format) are being stored.</param>
 		/// <exception cref="DirectoryNotFoundException" />
@@ -44,14 +47,17 @@ namespace ScriptLib.ClassicScript.Data
 			AllConstantFlags = allMnemonics;
 		}
 
+		/// <summary>
+		/// Finds and gets the description of the specified plugin constant.
+		/// </summary>
 		/// <exception cref="InvalidOperationException" />
-		public static string? GetDescriptionFromPlugin(string keyword)
+		public static string? GetPluginConstantDescription(string flagName)
 		{
 			if (PluginConstants.Count == 0)
 				throw new InvalidOperationException("Constants haven't been setup yet.");
 
 			foreach (PluginConstant constant in PluginConstants)
-				if (constant.FlagName.Equals(keyword, StringComparison.OrdinalIgnoreCase))
+				if (constant.FlagName.Equals(flagName, StringComparison.OrdinalIgnoreCase))
 				{
 					string description = constant.Description;
 					description = Regex.Replace(description, @"\r\n?|\n", "\n"); // Fixes broken newlines
@@ -76,12 +82,18 @@ namespace ScriptLib.ClassicScript.Data
 
 			string[] ngcDirFiles = Directory.GetFiles(ngcDir, "*.*", SearchOption.TopDirectoryOnly);
 
-			if (!Array.Exists(ngcDirFiles, x => Path.GetFileName(x).Equals("NG_Center.exe", StringComparison.OrdinalIgnoreCase)))
+			bool ngcExecutableExists = Array.Exists(ngcDirFiles,
+				x => Path.GetFileName(x).Equals("NG_Center.exe", StringComparison.OrdinalIgnoreCase));
+
+			if (!ngcExecutableExists)
 				throw new ArgumentException("Invalid NGC directory.");
 
 			string[] referencesDirFiles = Directory.GetFiles(referencesDir, "*.*", SearchOption.TopDirectoryOnly);
 
-			if (!Array.Exists(ngcDirFiles, x => Path.GetFileName(x).Equals(MnemonicConstantsXmlFileName, StringComparison.OrdinalIgnoreCase)))
+			bool requiredXmlFileExists = Array.Exists(referencesDirFiles,
+				x => Path.GetFileName(x).Equals(MnemonicConstantsXmlFileName, StringComparison.OrdinalIgnoreCase));
+
+			if (!requiredXmlFileExists)
 				throw new ArgumentException("References directory doesn't contain the required files.");
 		}
 

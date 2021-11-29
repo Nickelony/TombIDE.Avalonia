@@ -178,7 +178,12 @@ namespace ScriptLib.ClassicScript.Parsers
 
 					if (wholeCommandLineText.Contains(","))
 					{
-						string definedName = wholeCommandLineText.Split(',')[1].Replace("\n", "").Replace("\r", "").Replace(">", "").Trim();
+						string definedName =
+							wholeCommandLineText.Split(',')[1]
+							.Replace("\n", "")
+							.Replace("\r", "")
+							.Replace(">", "")
+							.Trim();
 
 						if (definedName.Equals(pluginName, StringComparison.OrdinalIgnoreCase))
 							return true;

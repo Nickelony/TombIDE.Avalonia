@@ -5,7 +5,7 @@ using Avalonia.Media;
 
 namespace TombIDE.Avalonia.Core.Views
 {
-	public class JumboButton : Button
+	public partial class JumboButton : Button
 	{
 		public static readonly StyledProperty<IImage> ImageSourceProperty = AvaloniaProperty.Register<Image, IImage>(nameof(ImageSource));
 		public IImage ImageSource

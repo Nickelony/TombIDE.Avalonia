@@ -6,7 +6,7 @@ using TombIDE.Avalonia.Core.Enums;
 
 namespace TombIDE.Avalonia.Core
 {
-	public class Project
+	public class ProjectModel
 	{
 		public const string ProjectDirectoryKey = "$(ProjectDirectory)";
 
@@ -119,19 +119,19 @@ namespace TombIDE.Avalonia.Core
 
 			using var writer = new StreamWriter(TrprojFilePath);
 
-			Project projectCopy = Clone();
+			ProjectModel projectCopy = Clone();
 			projectCopy.EncodeProjectPaths();
 
-			var serializer = new XmlSerializer(typeof(Project));
+			var serializer = new XmlSerializer(typeof(ProjectModel));
 			serializer.Serialize(writer, projectCopy);
 		}
 
 		/// <summary>
 		/// Creates and returns an exact copy of the current project without overriding the original data while in use.
 		/// </summary>
-		public Project Clone()
+		public ProjectModel Clone()
 		{
-			var projectCopy = new Project()
+			var projectCopy = new ProjectModel()
 			{
 				Name = Name,
 				GameVersion = GameVersion,
@@ -270,12 +270,12 @@ namespace TombIDE.Avalonia.Core
 
 		#region Public static methods
 
-		public static Project FromFile(string trprojPath)
+		public static ProjectModel FromFile(string trprojPath)
 		{
 			using (StreamReader reader = new StreamReader(trprojPath))
 			{
-				var serializer = new XmlSerializer(typeof(Project));
-				var project = serializer.Deserialize(reader) as Project;
+				var serializer = new XmlSerializer(typeof(ProjectModel));
+				var project = serializer.Deserialize(reader) as ProjectModel;
 
 				project.DecodeProjectPaths(trprojPath);
 

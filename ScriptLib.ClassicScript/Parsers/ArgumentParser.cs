@@ -1,4 +1,5 @@
 ﻿using AvaloniaEdit.Document;
+using ScriptLib.ClassicScript.Data.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;

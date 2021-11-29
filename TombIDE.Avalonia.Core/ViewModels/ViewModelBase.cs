@@ -1,10 +1,13 @@
-﻿using ReactiveUI.Validation.Helpers;
+﻿using ReactiveUI;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace TombIDE.Avalonia.Core.ViewModels
 {
-	public class ViewModelBase : ReactiveValidationObject
+	public abstract class ViewModelBase : ReactiveObject
 	{
-		private static Localization.Localization _strings = Localization.Localization.GetLocalization(Localization.Language.English);
-		private Localization.Localization Strings { get; set; } = _strings;
 	}
 }
