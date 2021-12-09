@@ -1,0 +1,119 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove=".gitignore" />
+    <None Remove="Assets\blank.png" />
+    <None Remove="Assets\flep.png" />
+    <None Remove="Assets\i18n\en.json" />
+    <None Remove="Assets\i18n\pl.json" />
+    <None Remove="Assets\load.bmp" />
+    <None Remove="Assets\logo_cranes.jpg" />
+    <None Remove="Assets\Plugin_ClassicInventory.jpg" />
+    <None Remove="Assets\ST.png" />
+    <None Remove="Assets\TE.png" />
+    <None Remove="Assets\TE_Min.png" />
+    <None Remove="Assets\TIDE.ico" />
+    <None Remove="Assets\TIDE.png" />
+    <None Remove="Assets\tr4.png" />
+    <None Remove="Assets\trng.png" />
+    <None Remove="Assets\TR_Logo.png" />
+    <None Remove="Assets\WT.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\Images\blank.png" />
+    <AvaloniaResource Include="Assets\Images\flep.png" />
+    <AvaloniaResource Include="Assets\i18n\en.json" />
+    <AvaloniaResource Include="Assets\i18n\pl.json" />
+    <AvaloniaResource Include="Assets\Images\load.bmp" />
+    <AvaloniaResource Include="Assets\Images\logo_cranes.jpg" />
+    <AvaloniaResource Include="Assets\Images\Plugin_ClassicInventory.jpg" />
+    <AvaloniaResource Include="Assets\Images\ST.png" />
+    <AvaloniaResource Include="Assets\Images\TE.png" />
+    <AvaloniaResource Include="Assets\Images\TE_Min.png" />
+    <AvaloniaResource Include="Assets\Images\TIDE.ico" />
+    <AvaloniaResource Include="Assets\Images\TIDE.png" />
+    <AvaloniaResource Include="Assets\Images\tr4.png" />
+    <AvaloniaResource Include="Assets\Images\trng.png" />
+    <AvaloniaResource Include="Assets\Images\TR_Logo.png" />
+    <AvaloniaResource Include="Assets\Images\WT.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia" Version="0.10.11" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.11" />
+    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.11" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.11" />
+    <PackageReference Include="Avalonia.ReactiveUI.Events" Version="0.10.11" />
+    <PackageReference Include="AvaloniaSpacedGrid" Version="0.10.4" />
+    <PackageReference Include="FluentAvaloniaUI" Version="1.1.8" />
+    <PackageReference Include="ReactiveUI.Fody" Version="17.1.9" />
+    <PackageReference Include="ReactiveUI.Validation" Version="2.2.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TombIDE.Core\TombIDE.Core.csproj" />
+    <ProjectReference Include="..\TombIDE.Services\TombIDE.Services.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Controls\ImageTextView.axaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\LogoView.axaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\Settings\SettingsPage.axaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\Settings\SettingsSection.axaml.cs">
+      <SubType>Code</SubType>
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Windows\MainWindow.axaml.cs">
+      <DependentUpon>MainWindow.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Windows\StartWindow.axaml.cs">
+      <DependentUpon>StartWindow.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Start\CreateProject\BasicInfoView.axaml.cs">
+      <DependentUpon>BasicInfoView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Start\CreateProject\ExtraOptionsView.axaml.cs">
+      <DependentUpon>ExtraOptionsView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Start\CreateProjectView.axaml.cs">
+      <DependentUpon>CreateProjectView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Start\ImportProjectView.axaml.cs">
+      <DependentUpon>ImportProjectView.axaml</DependentUpon>
+    </Compile>
+    <Compile Update="Start\SelectProjectView.axaml.cs">
+      <DependentUpon>SelectProjectView.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="MapManager\" />
+    <Folder Include="ProjectManager\Pages\" />
+    <Folder Include="ScriptingStudio\Docks\" />
+    <Folder Include="Styles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaXaml Update="Controls\ImageTextView.axaml">
+      <SubType>Designer</SubType>
+    </AvaloniaXaml>
+    <AvaloniaXaml Update="Controls\LogoView.axaml">
+      <SubType>Designer</SubType>
+    </AvaloniaXaml>
+    <AvaloniaXaml Update="Controls\Settings\SettingsPage.axaml">
+      <SubType>Designer</SubType>
+    </AvaloniaXaml>
+    <AvaloniaXaml Update="Controls\Settings\SettingsSection.axaml">
+      <SubType>Designer</SubType>
+    </AvaloniaXaml>
+  </ItemGroup>
+</Project>

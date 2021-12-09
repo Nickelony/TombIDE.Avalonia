@@ -1,0 +1,10 @@
+﻿{
+	"CreateNewProjTitle": "Stwórz nowy projekt...",
+	"CreateNewProjDesc": "Stwórz nowy projekt i wybierz jeden z wielu dostępnych szablonów gier.",
+	"OpenProjTitle": "Otwórz plik .trproj...",
+	"OpenProjDesc": "Otwórz istniejący projekt TombIDE.",
+	"ImportUsingExeTitle": "Importuj projekt z pliku .exe...",
+	"ImportUsingExeDesc": "Importuj projekt, który nigdy nie został otwarty przez TombIDE, lub nie posiada pliku .trproj.",
+	"OpenSelectedProj": "Otwórz wybrany projekt",
+	"RememberOnNextStartup": "Zapamiętaj wybór projektu przy następnym uruchomieniu"
+}

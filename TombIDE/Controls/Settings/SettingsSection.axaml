@@ -1,0 +1,45 @@
+<Styles
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:settings="using:TombIDE.Controls.Settings"
+	xmlns:sg="clr-namespace:AvaloniaSpacedGrid;assembly=AvaloniaSpacedGrid">
+
+	<Design.PreviewWith>
+		<settings:SettingsSection Header="Settings Section">
+			<StackPanel Spacing="5">
+				<TextBlock Text="Text Box 1:" />
+				<TextBox />
+			</StackPanel>
+			<StackPanel Spacing="5">
+				<TextBlock Text="Text Box 2:" />
+				<TextBox />
+			</StackPanel>
+			<StackPanel Spacing="5">
+				<TextBlock Text="Text Box 3:" />
+				<TextBox />
+			</StackPanel>
+		</settings:SettingsSection>
+	</Design.PreviewWith>
+
+	<Style Selector="settings|SettingsSection">
+		<Setter Property="Template">
+			<ControlTemplate>
+				<Panel MinWidth="500" Background="{TemplateBinding Background}">
+					<sg:SpacedGrid RowDefinitions="Auto, *" RowSpacing="30">
+						<TextBlock
+							FontSize="24"
+							FontWeight="Light"
+							Text="{TemplateBinding Header}" />
+						<ItemsPresenter Grid.Row="1" Items="{TemplateBinding Items}">
+							<ItemsPresenter.ItemsPanel>
+								<ItemsPanelTemplate>
+									<StackPanel Spacing="15" />
+								</ItemsPanelTemplate>
+							</ItemsPresenter.ItemsPanel>
+						</ItemsPresenter>
+					</sg:SpacedGrid>
+				</Panel>
+			</ControlTemplate>
+		</Setter>
+	</Style>
+</Styles>

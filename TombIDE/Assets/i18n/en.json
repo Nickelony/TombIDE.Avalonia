@@ -1,0 +1,10 @@
+﻿{
+	"CreateNewProjTitle": "Create a new project...",
+	"CreateNewProjDesc": "Create a new project and choose one of many available game templates.",
+	"OpenProjTitle": "Open .trproj file...",
+	"OpenProjDesc": "Open an existing TombIDE project.",
+	"ImportUsingExeTitle": "Import project using a .exe file...",
+	"ImportUsingExeDesc": "Import a project that has never been opened by TombIDE or doesn't have a .trproj file.",
+	"OpenSelectedProj": "Open selected project",
+	"RememberOnNextStartup": "Remember project selection on next startup"
+}

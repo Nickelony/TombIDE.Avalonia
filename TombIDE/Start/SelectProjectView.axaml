@@ -1,0 +1,114 @@
+<UserControl
+	x:Class="TombIDE.Start.SelectProjectView"
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:assets="using:TombIDE.Assets"
+	xmlns:controls="using:TombIDE.Controls"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:sg="clr-namespace:AvaloniaSpacedGrid;assembly=AvaloniaSpacedGrid"
+	xmlns:ui="using:FluentAvalonia.UI.Controls"
+	d:DesignHeight="550"
+	d:DesignWidth="800"
+	mc:Ignorable="d">
+
+	<sg:SpacedGrid
+		Margin="30"
+		ColumnDefinitions="*, Auto"
+		ColumnSpacing="20"
+		RowDefinitions="Auto, *, Auto"
+		RowSpacing="20">
+		<controls:LogoView />
+
+		<Button
+			Grid.Column="1"
+			HorizontalAlignment="Right"
+			VerticalAlignment="Stretch"
+			Command="{Binding ShowSettings}">
+			<ui:PathIcon Data="{StaticResource settings_regular}" />
+		</Button>
+
+		<TreeView Grid.Row="1">
+			<TreeView.Styles>
+				<Style Selector="Border">
+					<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
+					<Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
+				</Style>
+				<Style Selector="TreeViewItem /template/ Border#SelectionIndicator">
+					<Setter Property="Background" Value="{DynamicResource CheckBoxCheckBackgroundFillChecked}" />
+				</Style>
+				<Style Selector="TreeViewItem:selected /template/ Border#PART_LayoutRoot">
+					<Setter Property="Background" Value="{DynamicResource ControlStrongFillColorDisabled}" />
+				</Style>
+			</TreeView.Styles>
+			<TreeView.ItemTemplate>
+				<DataTemplate>
+					<StackPanel Orientation="Horizontal">
+						<Image
+							Width="36"
+							Margin="-24,4,8,4"
+							Source="avares://TombIDE/Assets/Images/flep.png" />
+						<TextBlock VerticalAlignment="Center" Text="Test project" />
+					</StackPanel>
+				</DataTemplate>
+			</TreeView.ItemTemplate>
+			<TextBlock Text="Adventure in Tinnos" />
+			<TextBlock Text="Return to London" />
+			<TextBlock Text="Tomb Raider: The Tomb of Something" />
+		</TreeView>
+
+		<StackPanel
+			Grid.Row="1"
+			Grid.Column="1"
+			Spacing="5">
+			<StackPanel.Styles>
+				<Style Selector="Button">
+					<Setter Property="Width" Value="340" />
+					<Setter Property="Height" Value="80" />
+					<Setter Property="HorizontalContentAlignment" Value="Left" />
+					<Setter Property="Padding" Value="20,0,20,0" />
+				</Style>
+			</StackPanel.Styles>
+
+			<Button Command="{Binding CreateNewProjectCmd}">
+				<controls:ImageTextView
+					Header="{assets:Localize CreateNewProjTitle}"
+					Note="{assets:Localize CreateNewProjDesc}"
+					PathData="{StaticResource new_regular}" />
+			</Button>
+
+			<Button Command="{Binding OpenTrprojCmd}">
+				<controls:ImageTextView
+					Header="{assets:Localize OpenProjTitle}"
+					Note="{assets:Localize OpenProjDesc}"
+					PathData="{StaticResource folder_open_regular}" />
+			</Button>
+
+			<Button Command="{Binding ImportUsingExeCmd}">
+				<controls:ImageTextView
+					Header="{assets:Localize ImportUsingExeTitle}"
+					Note="{assets:Localize ImportUsingExeDesc}"
+					PathData="{StaticResource open_folder_regular}" />
+			</Button>
+		</StackPanel>
+
+		<Border
+			Grid.Row="2"
+			Grid.ColumnSpan="2"
+			Padding="15"
+			BorderBrush="{DynamicResource ButtonBorderBrush}"
+			BorderThickness="{DynamicResource ButtonBorderThemeThickness}"
+			CornerRadius="{DynamicResource ControlCornerRadius}">
+			<Grid ColumnDefinitions="*, Auto">
+				<CheckBox
+					Grid.Column="0"
+					Content="{assets:Localize RememberOnNextStartup}"
+					IsChecked="{Binding RememberProject}" />
+				<Button
+					Grid.Column="1"
+					Command="{Binding OpenSelectedProjectCmd}"
+					Content="{assets:Localize OpenSelectedProj}" />
+			</Grid>
+		</Border>
+	</sg:SpacedGrid>
+</UserControl>

@@ -1,0 +1,53 @@
+<Styles
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:controls="using:TombIDE.Controls"
+	xmlns:ui="using:FluentAvalonia.UI.Controls">
+	<Design.PreviewWith>
+		<controls:ImageTextView
+			Width="160"
+			Height="80"
+			Margin="15,0,0,0"
+			Header="Header"
+			ImageSource="avares://TombIDE.Core.UI/Assets/trng.png"
+			Note="This is a test note" />
+	</Design.PreviewWith>
+
+	<Style Selector="controls|ImageTextView">
+		<Setter Property="Template">
+			<ControlTemplate>
+				<Grid ColumnDefinitions="Auto, *">
+					<Image
+						Name="PART_Image"
+						Width="{TemplateBinding IconWidth}"
+						Height="{TemplateBinding IconHeight}"
+						Margin="{TemplateBinding IconMargin}"
+						Source="{TemplateBinding ImageSource}" />
+					<ui:PathIcon
+						Name="PART_PathIcon"
+						Width="{TemplateBinding IconWidth}"
+						Height="{TemplateBinding IconHeight}"
+						Margin="{TemplateBinding IconMargin}"
+						Data="{TemplateBinding PathData}" />
+
+					<StackPanel
+						Grid.Column="1"
+						VerticalAlignment="Center"
+						Spacing="5">
+						<TextBlock
+							Name="PART_Header"
+							FontSize="{TemplateBinding HeaderFontSize}"
+							Text="{TemplateBinding Header}"
+							TextTrimming="CharacterEllipsis" />
+						<TextBlock
+							Name="PART_Note"
+							FontSize="{TemplateBinding NoteFontSize}"
+							Opacity="0.5"
+							Text="{TemplateBinding Note}"
+							TextWrapping="Wrap" />
+					</StackPanel>
+				</Grid>
+			</ControlTemplate>
+		</Setter>
+	</Style>
+</Styles>
