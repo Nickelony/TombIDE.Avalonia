@@ -5,8 +5,8 @@ namespace TombIDE.Services.Abstract;
 
 public interface IGameProjectListService
 {
-	IEnumerable<IGameProject> GetGameProjectList();
+	IEnumerable<GameProject> GetGameProjectList();
 	List<GameProjectRecord> GetGameProjectRecords();
-	IGameProject? GetGameProject(Predicate<IGameProject> predicate);
-	void AddProject(IGameProject project);
+	GameProject? GetGameProject(Predicate<GameProject> predicate);
+	void AddProject(GameProject project);
 }
