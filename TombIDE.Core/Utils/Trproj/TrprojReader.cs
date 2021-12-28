@@ -1,11 +1,11 @@
 ﻿using TombIDE.Core.Models;
-using TombIDE.Core.Utils;
+using TombIDE.Core.Models.Interfaces;
 
-namespace TombIDE.Formats.Trproj;
+namespace TombIDE.Core.Utils.Trproj;
 
 public static class TrprojReader
 {
-	public static IGameProject? FromFile(string filePath)
+	public static ITrprojFile? FromFile(string filePath)
 	{
 		if (!XmlUtils.IsXmlDocument(filePath, out XmlDocument document))
 			return null;
@@ -14,21 +14,21 @@ public static class TrprojReader
 
 		return fileVersion switch
 		{
-			1 => FromFileExact<V1.GameProjectV1>(filePath),
-			2 => FromFileExact<V2.GameProjectV2>(filePath),
+			1 => FromFileExact<Models.Legacy.Trproj.V1>(filePath),
+			2 => FromFileExact<TrprojFile>(filePath),
 			_ => null
 		};
 	}
 
-	public static T? FromFileExact<T>(string filePath) where T : class, IGameProject
+	public static T? FromFileExact<T>(string filePath) where T : class, ITrprojFile
 	{
 		using var reader = new StreamReader(filePath);
 		var project = new XmlSerializer(typeof(T)).Deserialize(reader) as T;
 
 		if (project != null)
 		{
-			project.ProjectFilePath = filePath;
-			project.MakePathsAbsolute(project.RootDirectoryPath);
+			string projectDirectory = Path.GetDirectoryName(filePath)!;
+			project.MakePathsAbsolute(projectDirectory);
 		}
 
 		return project;

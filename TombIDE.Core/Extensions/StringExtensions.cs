@@ -7,4 +7,7 @@ public static class StringExtensions
 
 	public static bool IsEqualButCaseChanged(this string value, string? toCompare)
 		=> value.Equals(toCompare, StringComparison.OrdinalIgnoreCase) && value != toCompare;
+
+	public static string[] SplitLines(this string value)
+		=> value.Replace("\r\n", "\n").Split("\n");
 }

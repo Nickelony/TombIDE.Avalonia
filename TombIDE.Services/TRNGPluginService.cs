@@ -1,6 +1,7 @@
 ﻿using TombIDE.Core;
 using TombIDE.Core.Models;
 using TombIDE.Core.Models.TRNG;
+using TombIDE.Formats.Parc;
 using TombIDE.Services.Abstract;
 
 namespace TombIDE.Services;
@@ -27,6 +28,11 @@ public class TRNGPluginService : ITRNGPluginService
 
 	public IEnumerable<TRNGPlugin> GetInstalledTRNGPlugins(IGameProject gameProject)
 	{
+		string parcFilePath = Path.Combine(gameProject.EngineDirectoryPath, PluginArchiveFileName);
+
+		if (File.Exists(parcFilePath))
+			ParcReader.
+
 		var availablePlugins = GetAvailableTRNGPlugins().ToList();
 
 		string[] pluginFiles = Directory.GetFiles(
