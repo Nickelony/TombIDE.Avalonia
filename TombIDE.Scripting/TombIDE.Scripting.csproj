@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TombIDE.Scripting.ClassicScript\TombIDE.Scripting.ClassicScript.csproj" />
+    <ProjectReference Include="..\TombIDE.Scripting.Core\TombIDE.Scripting.Core.csproj" />
+    <ProjectReference Include="..\TombIDE.Scripting.Lua\TombIDE.Scripting.Lua.csproj" />
+  </ItemGroup>
+
+</Project>

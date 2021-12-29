@@ -9,6 +9,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TombIDE.Core", "TombIDE.Cor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TombIDE.Services", "TombIDE.Services\TombIDE.Services.csproj", "{96126049-F8EB-4116-B193-EB109BFD800A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TombIDE.Scripting", "TombIDE.Scripting\TombIDE.Scripting.csproj", "{5AF64D29-6230-46D6-961F-73C757D53150}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TombIDE.Scripting.Core", "TombIDE.Scripting.Core\TombIDE.Scripting.Core.csproj", "{DADCA12D-6DEF-484C-AD42-37AA0AE3A978}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TombIDE.Scripting.ClassicScript", "TombIDE.Scripting.ClassicScript\TombIDE.Scripting.ClassicScript.csproj", "{7C502483-DC7C-4EAC-A5D6-D8B9B5CD090B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TombIDE.Scripting.Lua", "TombIDE.Scripting.Lua\TombIDE.Scripting.Lua.csproj", "{49776E47-B3EF-4F54-9717-4AD38F02E89D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripting", "Scripting", "{01139761-76FC-47A9-9DDD-E7302304FFD3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,9 +37,31 @@ Global
 		{96126049-F8EB-4116-B193-EB109BFD800A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96126049-F8EB-4116-B193-EB109BFD800A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96126049-F8EB-4116-B193-EB109BFD800A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AF64D29-6230-46D6-961F-73C757D53150}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AF64D29-6230-46D6-961F-73C757D53150}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AF64D29-6230-46D6-961F-73C757D53150}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AF64D29-6230-46D6-961F-73C757D53150}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DADCA12D-6DEF-484C-AD42-37AA0AE3A978}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DADCA12D-6DEF-484C-AD42-37AA0AE3A978}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DADCA12D-6DEF-484C-AD42-37AA0AE3A978}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DADCA12D-6DEF-484C-AD42-37AA0AE3A978}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C502483-DC7C-4EAC-A5D6-D8B9B5CD090B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C502483-DC7C-4EAC-A5D6-D8B9B5CD090B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C502483-DC7C-4EAC-A5D6-D8B9B5CD090B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C502483-DC7C-4EAC-A5D6-D8B9B5CD090B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49776E47-B3EF-4F54-9717-4AD38F02E89D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49776E47-B3EF-4F54-9717-4AD38F02E89D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49776E47-B3EF-4F54-9717-4AD38F02E89D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49776E47-B3EF-4F54-9717-4AD38F02E89D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5AF64D29-6230-46D6-961F-73C757D53150} = {01139761-76FC-47A9-9DDD-E7302304FFD3}
+		{DADCA12D-6DEF-484C-AD42-37AA0AE3A978} = {01139761-76FC-47A9-9DDD-E7302304FFD3}
+		{7C502483-DC7C-4EAC-A5D6-D8B9B5CD090B} = {01139761-76FC-47A9-9DDD-E7302304FFD3}
+		{49776E47-B3EF-4F54-9717-4AD38F02E89D} = {01139761-76FC-47A9-9DDD-E7302304FFD3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {33BAEDFD-6C6C-4534-BCF7-45C837BC59CD}
