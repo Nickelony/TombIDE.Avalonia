@@ -1,5 +1,4 @@
 ﻿using TombIDE.Core.Models.Bases;
-using TombIDE.Core.Models.Enums;
 using TombIDE.Core.Utils.Trproj;
 
 namespace TombIDE.Core.Models;

@@ -1,8 +1,10 @@
-﻿namespace TombIDE.Core.Models.Records;
+﻿using TombIDE.Core.Models.Interfaces;
 
-public record MnemonicConstantRecord(string ConstantName, short DecimalValue, string Description)
+namespace TombIDE.Core.Models;
+
+public sealed record MnemonicConstant(string Name, short DecimalValue, string Description) : INamed
 {
-	public string ConstantName { get; } = ConstantName;
+	public string Name { get; } = Name;
 	public short DecimalValue { get; } = DecimalValue;
 	public string Description { get; } = Description;
 

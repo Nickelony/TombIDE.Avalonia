@@ -49,6 +49,85 @@ public sealed class TRNGPlugin : INamed, IRooted
 	public TRNGPlugin(string pluginDirectoryPath)
 		=> RootDirectoryPath = pluginDirectoryPath;
 
+	public IEnumerable<MnemonicConstant> GetMnemonicConstants()
+	{
+		if (!File.Exists(ScriptFilePath))
+			yield break;
+
+		string[] lines = File.ReadAllLines(ScriptFilePath);
+
+		int startConstantsLineIndex = Array.FindIndex(lines, line =>
+			line.TrimStart().StartsWith("<start_constants>", StringComparison.OrdinalIgnoreCase));
+
+		if (startConstantsLineIndex == -1)
+			yield break;
+
+		int endConstantsLineIndex = Array.FindIndex(lines, line =>
+			line.TrimStart().StartsWith("<end>", StringComparison.OrdinalIgnoreCase));
+
+		if (endConstantsLineIndex == -1)
+			yield break;
+
+		for (int i = startConstantsLineIndex + 1; i < endConstantsLineIndex; i++)
+		{
+			string line = lines[i];
+
+			bool hasValue = line.Contains(':');
+
+			if (!hasValue)
+				continue;
+
+			string constantName = line.Split(':')[0].Trim();
+			string valueString = line.Split(':')[1].Trim();
+			string description = string.Empty;
+
+			int descriptionStartIndex = line.IndexOf(';') + 1;
+			bool hasDescription = descriptionStartIndex != 0;
+
+			if (hasDescription)
+			{
+				valueString = valueString.Split(';')[0].Trim();
+
+				string[] descriptionLines = line[descriptionStartIndex..].Split('>');
+				description = string.Join(Environment.NewLine, descriptionLines);
+			}
+
+			bool isValidShort = short.TryParse(valueString, out short shortValue);
+
+			if (!isValidShort)
+			{
+				try { shortValue = Convert.ToInt16(valueString.Replace("$", string.Empty), 16); }
+				catch { continue; }
+			}
+
+			yield return new MnemonicConstant(constantName, shortValue, description);
+		}
+	}
+
+	public void Install(string engineDirectoryPath, string ngcDirectoryPath)
+	{
+		InstallIntoGame(engineDirectoryPath);
+		InstallIntoNGC(ngcDirectoryPath);
+	}
+
+	private void InstallIntoGame(string engineDirectoryPath)
+	{
+		if (!File.Exists(DllFilePath))
+			return;
+
+		string destFilePath = Path.Combine(engineDirectoryPath, Path.GetFileName(DllFilePath));
+		File.Copy(DllFilePath, destFilePath);
+	}
+
+	private void InstallIntoNGC(string ngcDirectoryPath)
+	{
+		if (!File.Exists(ScriptFilePath))
+			return;
+
+		string destFilePath = Path.Combine(ngcDirectoryPath, Path.GetFileName(ScriptFilePath));
+		File.Copy(ScriptFilePath, destFilePath);
+	}
+
 	private string? GetPluginFile(string fileExtension)
 	{
 		string targetFileName = Path.GetFileNameWithoutExtension(DllFilePath) + fileExtension;

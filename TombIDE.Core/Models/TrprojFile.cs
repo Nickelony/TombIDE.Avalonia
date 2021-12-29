@@ -1,5 +1,4 @@
-﻿using TombIDE.Core.Models.Enums;
-using TombIDE.Core.Models.Interfaces;
+﻿using TombIDE.Core.Models.Interfaces;
 
 namespace TombIDE.Core.Models;
 

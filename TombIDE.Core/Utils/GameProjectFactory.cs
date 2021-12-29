@@ -6,6 +6,21 @@ namespace TombIDE.Core.Utils;
 
 public static class GameProjectFactory
 {
+	private static readonly GameLanguage DefaultInitialLanguage = new("English", "English.txt", "English.dat");
+
+	public static GameProject CreateNew(string projectFilePath, string name,
+		GameVersion gameVersion, string launcherFilePath, string scriptDirectoryPath,
+		string mapsDirectoryPath, string? trngPluginsDirectoryPath = null)
+	{
+		var supportedLanguages = new List<GameLanguage> { DefaultInitialLanguage };
+
+		return new GameProject(
+			projectFilePath, name, gameVersion, launcherFilePath,
+			scriptDirectoryPath, mapsDirectoryPath, null,
+			supportedLanguages, 0, trngPluginsDirectoryPath
+		);
+	}
+
 	public static GameProject? FromTrproj(ITrprojFile trproj)
 	{
 		if (trproj is Models.Legacy.Trproj.V1 v1)
@@ -46,6 +61,9 @@ public static class GameProjectFactory
 				language.OutputFileName
 			));
 		}
+
+		if (supportedLanguages.Count == 0)
+			supportedLanguages.Add(DefaultInitialLanguage);
 
 		return new GameProject(
 			trproj.FilePath,

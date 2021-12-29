@@ -1,4 +1,4 @@
-﻿namespace TombIDE.Core.Models.Enums;
+﻿namespace TombIDE.Core.Models;
 
 public enum GameVersion
 {

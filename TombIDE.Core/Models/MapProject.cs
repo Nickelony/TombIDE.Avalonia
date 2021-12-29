@@ -1,4 +1,5 @@
 ﻿using TombIDE.Core.Models.Bases;
+using TombIDE.Core.Utils;
 
 namespace TombIDE.Core.Models;
 
@@ -24,5 +25,27 @@ public sealed class MapProject : ProjectBase
 		RootDirectoryPath = rootDirectoryPath;
 		OutputFileName = outputFileName;
 		StartupFileName = startupFileName ?? string.Empty;
+	}
+
+	public string[] GetPrj2Files(bool includeBackupFiles)
+	{
+		string[] prj2Files = Directory.GetFiles(RootDirectoryPath, "*.prj2", SearchOption.TopDirectoryOnly);
+
+		if (includeBackupFiles)
+			return prj2Files;
+
+		return Array.FindAll(prj2Files, file => !Prj2Utils.IsBackupFile(file));
+	}
+
+	public string? GetMostRecentlyModifiedPrj2FilePath()
+	{
+		var directory = new DirectoryInfo(RootDirectoryPath);
+
+		IOrderedEnumerable<FileInfo> prj2Files = directory
+			.GetFiles("*.prj2", SearchOption.TopDirectoryOnly)
+			.OrderByDescending(file => file.LastWriteTime);
+
+		return prj2Files.ToList().Find(file =>
+			!Prj2Utils.IsBackupFile(file.FullName))?.FullName;
 	}
 }

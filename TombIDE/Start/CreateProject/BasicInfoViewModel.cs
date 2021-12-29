@@ -1,5 +1,5 @@
 ﻿using System.Reactive.Linq;
-using TombIDE.Core.Models.Enums;
+using TombIDE.Core.Models;
 
 namespace TombIDE.Start.CreateProject;
 
