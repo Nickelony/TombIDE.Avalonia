@@ -53,14 +53,12 @@ public sealed class GameProject : ProjectBase
 	/// <summary>
 	/// A list of the project's installed TRNG plugins.
 	/// </summary>
-	public List<TRNGPlugin> InstalledTRNGPlugins
+	public IEnumerable<TRNGPlugin> InstalledTRNGPlugins
 	{
 		get
 		{
-			var result = new List<TRNGPlugin>();
-
 			if (string.IsNullOrEmpty(TRNGPluginsDirectoryPath))
-				return result;
+				yield break;
 
 			var rootPluginsDirectory = new DirectoryInfo(TRNGPluginsDirectoryPath);
 			DirectoryInfo[] pluginSubdirectories = rootPluginsDirectory.GetDirectories("*", SearchOption.TopDirectoryOnly);
@@ -72,10 +70,8 @@ public sealed class GameProject : ProjectBase
 				if (plugin.DllFilePath == null)
 					continue;
 
-				result.Add(plugin);
+				yield return plugin;
 			}
-
-			return result;
 		}
 	}
 
@@ -129,39 +125,7 @@ public sealed class GameProject : ProjectBase
 
 	public void Save()
 	{
-		var trproj = new TrprojFile
-		{
-			FilePath = ProjectFilePath,
-			Name = Name,
-			GameVersion = GameVersion,
-			LauncherFilePath = LauncherFilePath,
-			ScriptDirectoryPath = ScriptDirectoryPath,
-			MapsDirectoryPath = MapsDirectoryPath,
-			DefaultLanguageIndex = DefaultLanguageIndex,
-			TRNGPluginsDirectoryPath = TRNGPluginsDirectoryPath
-		};
-
-		foreach (MapProject map in MapProjects)
-		{
-			trproj.MapRecords.Add(new TrprojFile.MapRecord
-			{
-				Name = map.Name,
-				RootDirectoryPath = map.RootDirectoryPath,
-				StartupFileName = map.StartupFileName,
-				OutputFileName = map.OutputFileName
-			});
-		}
-
-		foreach (GameLanguage language in SupportedLanguages)
-		{
-			trproj.SupportedLanguages.Add(new TrprojFile.LanguageRecord
-			{
-				Name = language.Name,
-				StringsFileName = language.StringsFileName,
-				OutputFileName = language.OutputFileName
-			});
-		}
-
+		TrprojFile trproj = TrprojFactory.FromGameProject(this);
 		TrprojWriter.WriteToFile(ProjectFilePath, trproj);
 	}
 }
