@@ -1,5 +1,4 @@
-﻿using TombIDE.Core;
-using TombIDE.Core.Models;
+﻿using TombIDE.Core.Models;
 using TombIDE.Core.Models.Interfaces;
 using TombIDE.Core.Utils;
 using TombIDE.Core.Utils.Trproj;
@@ -10,6 +9,11 @@ namespace TombIDE.Services;
 
 public sealed class GameProjectDbService : IGameProjectDbService
 {
+	public string GameProjectsXmlFilePath { get; set; }
+
+	public GameProjectDbService(string gameProjectsXmlFilePath)
+		=> GameProjectsXmlFilePath = gameProjectsXmlFilePath;
+
 	public void AddProject(GameProject project)
 	{
 		var projectRecords = GetGameProjectRecords().ToList();
@@ -23,7 +27,7 @@ public sealed class GameProjectDbService : IGameProjectDbService
 		var newProjectRecord = new GameProjectRecord(project.ProjectFilePath, DateTime.Now);
 
 		projectRecords.Add(newProjectRecord);
-		XmlUtils.SaveXmlFile(DefaultPaths.ProjectRecordsFilePath, projectRecords);
+		XmlUtils.SaveXmlFile(GameProjectsXmlFilePath, projectRecords);
 	}
 
 	public IEnumerable<GameProject> GetGameProjects()
@@ -45,7 +49,7 @@ public sealed class GameProjectDbService : IGameProjectDbService
 	}
 
 	public IEnumerable<GameProjectRecord> GetGameProjectRecords()
-		=> XmlUtils.ReadXmlFile<IEnumerable<GameProjectRecord>>(DefaultPaths.ProjectRecordsFilePath);
+		=> XmlUtils.ReadXmlFile<IEnumerable<GameProjectRecord>>(GameProjectsXmlFilePath);
 
 	public GameProject? GetGameProject(Predicate<GameProject> match)
 		=> GetGameProjects().ToList().Find(match);
