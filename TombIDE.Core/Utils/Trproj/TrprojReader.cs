@@ -29,6 +29,8 @@ public static class TrprojReader
 		{
 			string projectDirectory = Path.GetDirectoryName(filePath)!;
 			project.MakePathsAbsolute(projectDirectory);
+
+			project.FilePath = filePath;
 		}
 
 		return project;

@@ -1,11 +1,15 @@
 ﻿using TombIDE.Core.Models;
+using TrprojV1 = TombIDE.Core.Models.Legacy.Trproj.V1;
 
 namespace TombIDE.Core.Utils.Trproj;
 
 public static class TrprojConverter
 {
-	public static TrprojFile V1ToLatest(Models.Legacy.Trproj.V1 trprojV1)
+	public static TrprojFile V1ToLatest(TrprojV1 trprojV1)
 	{
+		string trprojDirectory = Path.GetDirectoryName(trprojV1.FilePath)!;
+		string defaultTRNGPluginsDirectoryPath = Path.Combine(trprojDirectory, "Plugins");
+
 		var result = new TrprojFile
 		{
 			FilePath = trprojV1.FilePath,
@@ -13,17 +17,18 @@ public static class TrprojConverter
 			GameVersion = trprojV1.GameVersion,
 			LauncherFilePath = trprojV1.LaunchFilePath,
 			ScriptDirectoryPath = trprojV1.ScriptPath,
-			MapsDirectoryPath = trprojV1.LevelsPath
+			MapsDirectoryPath = trprojV1.LevelsPath,
+			TRNGPluginsDirectoryPath = defaultTRNGPluginsDirectoryPath
 		};
 
-		foreach (Models.Legacy.Trproj.V1.ProjectLevel level in trprojV1.Levels)
+		foreach (TrprojV1.ProjectLevel level in trprojV1.Levels)
 		{
 			result.MapRecords.Add(new TrprojFile.MapRecord
 			{
 				Name = level.Name,
 				RootDirectoryPath = level.FolderPath,
 
-				StartupFileName = level.SpecificFile == Models.Legacy.Trproj.V1.ProjectLevel.LastModifiedFileKey ?
+				StartupFileName = level.SpecificFile == TrprojV1.ProjectLevel.LastModifiedFileKey ?
 					string.Empty : level.SpecificFile,
 
 				OutputFileName = level.DataFileName

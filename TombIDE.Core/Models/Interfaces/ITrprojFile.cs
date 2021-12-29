@@ -8,5 +8,5 @@ public interface ITrprojFile : IVersioned, ISupportsRelativePaths
 	/// <summary>
 	/// File path of the .trproj file.
 	/// </summary>
-	string FilePath { get; }
+	string FilePath { get; set; }
 }

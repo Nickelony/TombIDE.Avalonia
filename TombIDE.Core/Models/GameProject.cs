@@ -54,7 +54,31 @@ public sealed class GameProject : ProjectBase
 	/// <summary>
 	/// A list of the project's installed TRNG plugins.
 	/// </summary>
-	public List<TRNGPlugin> InstalledTRNGPlugins { get; set; }
+	public List<TRNGPlugin> InstalledTRNGPlugins
+	{
+		get
+		{
+			var result = new List<TRNGPlugin>();
+
+			if (string.IsNullOrEmpty(TRNGPluginsDirectoryPath))
+				return result;
+
+			var rootPluginsDirectory = new DirectoryInfo(TRNGPluginsDirectoryPath);
+			DirectoryInfo[] pluginSubdirectories = rootPluginsDirectory.GetDirectories("*", SearchOption.TopDirectoryOnly);
+
+			foreach (DirectoryInfo directory in pluginSubdirectories)
+			{
+				var plugin = new TRNGPlugin(directory.FullName);
+
+				if (plugin.DllFilePath == null)
+					continue;
+
+				result.Add(plugin);
+			}
+
+			return result;
+		}
+	}
 
 	public override string Name { get; set; }
 
@@ -90,7 +114,7 @@ public sealed class GameProject : ProjectBase
 	public GameProject(string projectFilePath, string name, GameVersion gameVersion, string launcherFilePath,
 		string scriptDirectoryPath, string mapsDirectoryPath, List<MapProject>? mapProjects = null,
 		List<GameLanguage>? supportedLanguages = null, int defaultLanguageIndex = 0,
-		string? trngPluginsDirectoryPath = null, List<TRNGPlugin>? installedTRNGPlugins = null)
+		string? trngPluginsDirectoryPath = null)
 	{
 		ProjectFilePath = projectFilePath;
 		Name = name;
@@ -102,13 +126,13 @@ public sealed class GameProject : ProjectBase
 		SupportedLanguages = supportedLanguages ?? new();
 		DefaultLanguageIndex = defaultLanguageIndex;
 		TRNGPluginsDirectoryPath = trngPluginsDirectoryPath;
-		InstalledTRNGPlugins = installedTRNGPlugins ?? new();
 	}
 
 	public void Save()
 	{
 		var trproj = new TrprojFile
 		{
+			FilePath = ProjectFilePath,
 			Name = Name,
 			GameVersion = GameVersion,
 			LauncherFilePath = LauncherFilePath,
@@ -139,7 +163,6 @@ public sealed class GameProject : ProjectBase
 			});
 		}
 
-		trproj.MakePathsRelative(RootDirectoryPath);
 		TrprojWriter.WriteToFile(ProjectFilePath, trproj);
 	}
 }
