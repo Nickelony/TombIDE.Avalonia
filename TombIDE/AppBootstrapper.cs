@@ -14,6 +14,5 @@ public class AppBootstrapper
 		IMutableDependencyResolver mutable = Locator.CurrentMutable;
 
 		mutable.RegisterConstant(() => new GameProjectListService(), typeof(IGameProjectListService));
-		mutable.RegisterConstant(() => new TRNGPluginService(), typeof(ITRNGPluginService));
 	}
 }
