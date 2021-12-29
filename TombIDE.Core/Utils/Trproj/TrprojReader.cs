@@ -5,7 +5,7 @@ namespace TombIDE.Core.Utils.Trproj;
 
 public static class TrprojReader
 {
-	public static ITrprojFile? FromFile(string filePath)
+	public static ITrprojFile? ReadFile(string filePath)
 	{
 		if (!XmlUtils.IsXmlDocument(filePath, out XmlDocument document))
 			return null;
@@ -14,13 +14,13 @@ public static class TrprojReader
 
 		return fileVersion switch
 		{
-			1 => FromFileExact<Models.Legacy.Trproj.V1>(filePath),
-			2 => FromFileExact<TrprojFile>(filePath),
+			1 => ReadFileExact<Models.Legacy.Trproj.V1>(filePath),
+			2 => ReadFileExact<TrprojFile>(filePath),
 			_ => null
 		};
 	}
 
-	public static T? FromFileExact<T>(string filePath) where T : class, ITrprojFile
+	public static T? ReadFileExact<T>(string filePath) where T : class, ITrprojFile
 	{
 		using var reader = new StreamReader(filePath);
 		var project = new XmlSerializer(typeof(T)).Deserialize(reader) as T;

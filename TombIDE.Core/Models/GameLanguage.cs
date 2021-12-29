@@ -2,7 +2,7 @@
 
 namespace TombIDE.Core.Models;
 
-public sealed record GameLanguage(string Name, string StringsFileName, string OutputFileName) : INamed
+public sealed record GameLanguage(string Name, string StringsFileName, string OutputFileName) : INamed, IValidated
 {
 	public string Name { get; set; } = Name;
 
@@ -15,4 +15,8 @@ public sealed record GameLanguage(string Name, string StringsFileName, string Ou
 	/// Name of the output data file (e.g. English.dat).
 	/// </summary>
 	public string OutputFileName { get; set; } = OutputFileName;
+
+	public bool IsValid
+		=> !string.IsNullOrWhiteSpace(StringsFileName)
+		&& !string.IsNullOrWhiteSpace(OutputFileName);
 }

@@ -4,10 +4,12 @@ using TombIDE.Core.Models.Interfaces;
 
 namespace TombIDE.Core.Models.Bases;
 
-public abstract class ProjectBase : INamed, IRooted, IEquatable<ProjectBase>
+public abstract class ProjectBase : INamed, IRooted, IValidated, IEquatable<ProjectBase>
 {
 	public abstract string Name { get; set; }
 	public abstract string RootDirectoryPath { get; set; }
+
+	public abstract bool IsValid { get; }
 
 	public bool Equals(ProjectBase? other) => other is not null && other.RootDirectoryPath == RootDirectoryPath;
 	public override bool Equals(object? obj) => Equals(obj as ProjectBase);

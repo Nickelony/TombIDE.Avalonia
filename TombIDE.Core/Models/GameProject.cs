@@ -106,6 +106,14 @@ public sealed class GameProject : ProjectBase
 		}
 	}
 
+	public override bool IsValid
+		=> File.Exists(ProjectFilePath)
+		&& GameVersion != GameVersion.Unknown
+		&& File.Exists(LauncherFilePath)
+		&& Directory.Exists(ScriptDirectoryPath)
+		&& Directory.Exists(MapsDirectoryPath)
+		&& SupportedLanguages.Count > 0;
+
 	public GameProject(string projectFilePath, string name, GameVersion gameVersion, string launcherFilePath,
 		string scriptDirectoryPath, string mapsDirectoryPath, List<MapProject>? mapProjects = null,
 		List<GameLanguage>? supportedLanguages = null, int defaultLanguageIndex = 0,

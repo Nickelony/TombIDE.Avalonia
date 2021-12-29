@@ -6,7 +6,7 @@ namespace TombIDE.Core.Utils;
 
 public static class GameProjectFactory
 {
-	private static readonly GameLanguage DefaultInitialLanguage = new("English", "English.txt", "English.dat");
+	private static GameLanguage DefaultInitialLanguage => new("English", "English.txt", "English.dat");
 
 	public static GameProject CreateNew(string projectFilePath, string name,
 		GameVersion gameVersion, string launcherFilePath, string scriptDirectoryPath,
@@ -41,25 +41,31 @@ public static class GameProjectFactory
 	{
 		var mapProjects = new List<MapProject>();
 
-		foreach (TrprojFile.MapRecord map in trproj.MapRecords)
+		foreach (TrprojFile.MapRecord mapRecord in trproj.MapRecords)
 		{
-			mapProjects.Add(new MapProject(
-				map.Name,
-				map.RootDirectoryPath,
-				map.OutputFileName,
-				map.StartupFileName
-			));
+			var mapProject = new MapProject(
+				mapRecord.Name,
+				mapRecord.RootDirectoryPath,
+				mapRecord.OutputFileName,
+				mapRecord.StartupFileName
+			);
+
+			if (mapProject.IsValid)
+				mapProjects.Add(mapProject);
 		}
 
 		var supportedLanguages = new List<GameLanguage>();
 
-		foreach (TrprojFile.LanguageRecord language in trproj.SupportedLanguages)
+		foreach (TrprojFile.LanguageRecord languageRecord in trproj.SupportedLanguages)
 		{
-			supportedLanguages.Add(new GameLanguage(
-				language.Name,
-				language.StringsFileName,
-				language.OutputFileName
-			));
+			var gameLanguage = new GameLanguage(
+				languageRecord.Name,
+				languageRecord.StringsFileName,
+				languageRecord.OutputFileName
+			);
+
+			if (gameLanguage.IsValid)
+				supportedLanguages.Add(gameLanguage);
 		}
 
 		if (supportedLanguages.Count == 0)

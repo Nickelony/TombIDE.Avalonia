@@ -19,6 +19,11 @@ public sealed class MapProject : ProjectBase
 	/// </summary>
 	public string OutputFileName { get; set; }
 
+	public override bool IsValid
+		=> Directory.Exists(RootDirectoryPath)
+		&& !string.IsNullOrWhiteSpace(OutputFileName)
+		&& GetPrj2Files(false).Length > 0;
+
 	public MapProject(string name, string rootDirectoryPath, string outputFileName, string? startupFileName = null)
 	{
 		Name = name;

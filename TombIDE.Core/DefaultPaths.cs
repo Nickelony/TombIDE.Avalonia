@@ -6,8 +6,7 @@ namespace TombIDE.Core;
 
 public static class DefaultPaths
 {
-	public static string ProgramDirectory
-		=> Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) ?? string.Empty;
+	public static string ProgramDirectory => Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!;
 
 	#region Configs
 

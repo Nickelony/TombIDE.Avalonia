@@ -4,14 +4,15 @@ using TombIDE.Core.Models.Interfaces;
 using TombIDE.Core.Utils;
 using TombIDE.Core.Utils.Trproj;
 using TombIDE.Services.Abstract;
+using TombIDE.Services.Records;
 
 namespace TombIDE.Services;
 
-public class GameProjectListService : IGameProjectListService
+public sealed class GameProjectDbService : IGameProjectDbService
 {
 	public void AddProject(GameProject project)
 	{
-		List<GameProjectRecord> projectRecords = GetGameProjectRecords();
+		var projectRecords = GetGameProjectRecords().ToList();
 
 		bool projectAlreadyExists = projectRecords.Exists(record =>
 			record.ProjectFilePath == project.ProjectFilePath);
@@ -25,27 +26,27 @@ public class GameProjectListService : IGameProjectListService
 		XmlUtils.SaveXmlFile(DefaultPaths.ProjectRecordsFilePath, projectRecords);
 	}
 
-	public IEnumerable<GameProject> GetGameProjectList()
+	public IEnumerable<GameProject> GetGameProjects()
 	{
-		List<GameProjectRecord> projectRecords = XmlUtils.ReadXmlFile<List<GameProjectRecord>>("");
+		IEnumerable<GameProjectRecord> projectRecords = GetGameProjectRecords();
 
 		foreach (GameProjectRecord record in projectRecords)
 		{
-			ITrprojFile? trproj = TrprojReader.FromFile(record.ProjectFilePath);
+			ITrprojFile? trproj = TrprojReader.ReadFile(record.ProjectFilePath);
 
 			if (trproj == null)
 				continue;
 
 			GameProject? gameProject = GameProjectFactory.FromTrproj(trproj);
 
-			if (gameProject != null)
+			if (gameProject != null && gameProject.IsValid)
 				yield return gameProject;
 		}
 	}
 
-	public List<GameProjectRecord> GetGameProjectRecords()
-		=> XmlUtils.ReadXmlFile<List<GameProjectRecord>>(DefaultPaths.ProjectRecordsFilePath);
+	public IEnumerable<GameProjectRecord> GetGameProjectRecords()
+		=> XmlUtils.ReadXmlFile<IEnumerable<GameProjectRecord>>(DefaultPaths.ProjectRecordsFilePath);
 
 	public GameProject? GetGameProject(Predicate<GameProject> match)
-		=> GetGameProjectList().ToList().Find(match);
+		=> GetGameProjects().ToList().Find(match);
 }

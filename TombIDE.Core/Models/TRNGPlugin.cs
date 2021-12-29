@@ -3,7 +3,7 @@ using TombIDE.Core.Models.Interfaces;
 
 namespace TombIDE.Core.Models;
 
-public sealed class TRNGPlugin : INamed, IRooted
+public sealed class TRNGPlugin : INamed, IRooted, IValidated
 {
 	public string RootDirectoryPath { get; set; }
 
@@ -45,6 +45,9 @@ public sealed class TRNGPlugin : INamed, IRooted
 			return Path.Combine(RootDirectoryPath, logoFileName);
 		}
 	}
+
+	public bool IsValid
+		=> File.Exists(DllFilePath);
 
 	public TRNGPlugin(string pluginDirectoryPath)
 		=> RootDirectoryPath = pluginDirectoryPath;
