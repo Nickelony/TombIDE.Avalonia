@@ -92,7 +92,7 @@ public sealed class TRNGPlugin : INamed, IRooted, IValidated
 				valueString = valueString.Split(';')[0].Trim();
 
 				string[] descriptionLines = line[descriptionStartIndex..].Split('>');
-				description = string.Join(Environment.NewLine, descriptionLines);
+				description = string.Join(Environment.NewLine, descriptionLines.TrimEndAll());
 			}
 
 			bool isValidShort = short.TryParse(valueString, out short shortValue);

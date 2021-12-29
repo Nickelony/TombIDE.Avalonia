@@ -1,3 +1,9 @@
-﻿namespace TombIDE.Services.Records;
+﻿using System.Xml.Serialization;
 
-public sealed record WorkSessionsRecord(DateOnly Date, List<GameProjectRecord> GameProjectRecords);
+namespace TombIDE.Services.Records;
+
+public sealed record WorkSessionsRecord(DateOnly Date, List<GameProjectRecord> GameProjectRecords)
+{
+	[XmlAttribute] public DateOnly Date { get; } = Date;
+	[XmlArray] public List<GameProjectRecord> GameProjectRecords { get; } = GameProjectRecords;
+}

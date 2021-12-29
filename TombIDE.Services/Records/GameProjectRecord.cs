@@ -1,3 +1,9 @@
-﻿namespace TombIDE.Services.Records;
+﻿using System.Xml.Serialization;
 
-public sealed record GameProjectRecord(string ProjectFilePath, DateTime LastOpened);
+namespace TombIDE.Services.Records;
+
+public sealed record GameProjectRecord(string ProjectFilePath, DateTime LastOpened)
+{
+	[XmlAttribute] public string ProjectFilePath { get; } = ProjectFilePath;
+	[XmlAttribute] public DateTime LastOpened { get; } = LastOpened;
+}
