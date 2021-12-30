@@ -14,16 +14,12 @@ public sealed class TRNGPlugin : INamed, IRooted, IValidated
 			var directory = new DirectoryInfo(RootDirectoryPath);
 			FileInfo[] pluginDllFiles = directory.GetFiles("plugin_*.dll", SearchOption.TopDirectoryOnly);
 
-			FileInfo? firstDllFile = pluginDllFiles.FirstOrDefault();
-
-			if (firstDllFile == null)
-				return null;
-
-			return firstDllFile.FullName;
+			return pluginDllFiles.FirstOrDefault()?.FullName;
 		}
 	}
 
-	public string Name => GetValueFromBtnFile("NAME")
+	public string Name
+		=> GetValueFromBtnFile("NAME")
 		?? Path.GetFileNameWithoutExtension(DllFilePath)
 		?? "ERROR";
 
@@ -38,11 +34,7 @@ public sealed class TRNGPlugin : INamed, IRooted, IValidated
 		get
 		{
 			string? logoFileName = GetValueFromBtnFile("LOGO");
-
-			if (logoFileName == null)
-				return null;
-
-			return Path.Combine(RootDirectoryPath, logoFileName);
+			return logoFileName != null ? Path.Combine(RootDirectoryPath, logoFileName) : null;
 		}
 	}
 
@@ -62,19 +54,15 @@ public sealed class TRNGPlugin : INamed, IRooted, IValidated
 		int startConstantsLineIndex = Array.FindIndex(lines, line =>
 			line.TrimStart().StartsWith("<start_constants>", StringComparison.OrdinalIgnoreCase));
 
-		if (startConstantsLineIndex == -1)
-			yield break;
-
-		int endConstantsLineIndex = Array.FindIndex(lines, line =>
+		int endLineIndex = Array.FindIndex(lines, line =>
 			line.TrimStart().StartsWith("<end>", StringComparison.OrdinalIgnoreCase));
 
-		if (endConstantsLineIndex == -1)
+		if (startConstantsLineIndex == -1 || endLineIndex == -1)
 			yield break;
 
-		for (int i = startConstantsLineIndex + 1; i < endConstantsLineIndex; i++)
+		for (int i = startConstantsLineIndex + 1; i < endLineIndex; i++)
 		{
 			string line = lines[i];
-
 			bool hasValue = line.Contains(':');
 
 			if (!hasValue)
@@ -136,10 +124,7 @@ public sealed class TRNGPlugin : INamed, IRooted, IValidated
 		string targetFileName = Path.GetFileNameWithoutExtension(DllFilePath) + fileExtension;
 		string targetFilePath = Path.Combine(RootDirectoryPath, targetFileName);
 
-		if (!File.Exists(targetFilePath))
-			return null;
-
-		return targetFilePath;
+		return File.Exists(targetFilePath) ? targetFilePath : null;
 	}
 
 	private string? GetValueFromBtnFile(string key)

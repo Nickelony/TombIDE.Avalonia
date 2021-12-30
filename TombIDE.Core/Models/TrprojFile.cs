@@ -10,17 +10,13 @@ public sealed class TrprojFile : ITrprojFile
 
 	[XmlAttribute] public string Name { get; set; } = string.Empty;
 	[XmlAttribute] public GameVersion GameVersion { get; set; } = GameVersion.Unknown;
-	[XmlAttribute] public string LauncherFilePath { get; set; } = string.Empty;
 	[XmlAttribute] public string ScriptDirectoryPath { get; set; } = string.Empty;
 	[XmlAttribute] public string MapsDirectoryPath { get; set; } = string.Empty;
 	[XmlAttribute] public string? TRNGPluginsDirectoryPath { get; set; }
-	[XmlAttribute] public int DefaultLanguageIndex { get; set; } = 0;
-	[XmlArray] public List<LanguageRecord> SupportedLanguages { get; set; } = new();
 	[XmlArray] public List<MapRecord> MapRecords { get; set; } = new();
 
 	public void MakePathsRelative(string baseDirectory)
 	{
-		LauncherFilePath = Path.GetRelativePath(baseDirectory, LauncherFilePath);
 		ScriptDirectoryPath = Path.GetRelativePath(baseDirectory, ScriptDirectoryPath);
 		MapsDirectoryPath = Path.GetRelativePath(baseDirectory, MapsDirectoryPath);
 
@@ -32,7 +28,6 @@ public sealed class TrprojFile : ITrprojFile
 
 	public void MakePathsAbsolute(string baseDirectory)
 	{
-		LauncherFilePath = Path.GetFullPath(LauncherFilePath, baseDirectory);
 		ScriptDirectoryPath = Path.GetFullPath(ScriptDirectoryPath, baseDirectory);
 		MapsDirectoryPath = Path.GetFullPath(MapsDirectoryPath, baseDirectory);
 
@@ -47,19 +42,11 @@ public sealed class TrprojFile : ITrprojFile
 		[XmlAttribute] public string Name { get; set; } = string.Empty;
 		[XmlAttribute] public string RootDirectoryPath { get; set; } = string.Empty;
 		[XmlAttribute] public string StartupFileName { get; set; } = string.Empty;
-		[XmlAttribute] public string OutputFileName { get; set; } = string.Empty;
 
 		public void MakePathsAbsolute(string baseDirectory)
 			=> RootDirectoryPath = Path.GetFullPath(RootDirectoryPath, baseDirectory);
 
 		public void MakePathsRelative(string baseDirectory)
 			=> RootDirectoryPath = Path.GetRelativePath(baseDirectory, RootDirectoryPath);
-	}
-
-	public sealed class LanguageRecord
-	{
-		[XmlAttribute] public string Name { get; set; } = string.Empty;
-		[XmlAttribute] public string StringsFileName { get; set; } = string.Empty;
-		[XmlAttribute] public string OutputFileName { get; set; } = string.Empty;
 	}
 }

@@ -14,25 +14,18 @@ public sealed class MapProject : ProjectBase
 	/// </summary>
 	public string StartupFileName { get; set; }
 
-	/// <summary>
-	/// Name of the output level file (.dat file).
-	/// </summary>
-	public string OutputFileName { get; set; }
-
 	public override bool IsValid
 		=> Directory.Exists(RootDirectoryPath)
-		&& !string.IsNullOrWhiteSpace(OutputFileName)
 		&& GetPrj2Files(false).Length > 0;
 
-	public MapProject(string name, string rootDirectoryPath, string outputFileName, string? startupFileName = null)
+	public MapProject(string name, string rootDirectoryPath, string? startupFileName = null)
 	{
 		Name = name;
 		RootDirectoryPath = rootDirectoryPath;
-		OutputFileName = outputFileName;
 		StartupFileName = startupFileName ?? string.Empty;
 	}
 
-	public string[] GetPrj2Files(bool includeBackupFiles)
+	public string[] GetPrj2Files(bool includeBackupFiles = false)
 	{
 		string[] prj2Files = Directory.GetFiles(RootDirectoryPath, "*.prj2", SearchOption.TopDirectoryOnly);
 

@@ -6,20 +6,8 @@ namespace TombIDE.Core.Utils;
 
 public static class GameProjectFactory
 {
-	private static GameLanguage DefaultInitialLanguage => new("English", "English.txt", "English.dat");
-
-	public static GameProject CreateNew(string projectFilePath, string name,
-		GameVersion gameVersion, string launcherFilePath, string scriptDirectoryPath,
-		string mapsDirectoryPath, string? trngPluginsDirectoryPath = null)
-	{
-		var supportedLanguages = new List<GameLanguage> { DefaultInitialLanguage };
-
-		return new GameProject(
-			projectFilePath, name, gameVersion, launcherFilePath,
-			scriptDirectoryPath, mapsDirectoryPath, null,
-			supportedLanguages, 0, trngPluginsDirectoryPath
-		);
-	}
+	public static GameProject CreateNew(string projectFilePath, string name, GameVersion gameVersion, string scriptDirectoryPath, string mapsDirectoryPath, string? trngPluginsDirectoryPath = null)
+		=> new(projectFilePath, name, gameVersion, scriptDirectoryPath, mapsDirectoryPath, trngPluginsDirectoryPath);
 
 	public static GameProject? FromTrproj(ITrprojFile trproj)
 	{
@@ -46,7 +34,6 @@ public static class GameProjectFactory
 			var mapProject = new MapProject(
 				mapRecord.Name,
 				mapRecord.RootDirectoryPath,
-				mapRecord.OutputFileName,
 				mapRecord.StartupFileName
 			);
 
@@ -54,34 +41,14 @@ public static class GameProjectFactory
 				mapProjects.Add(mapProject);
 		}
 
-		var supportedLanguages = new List<GameLanguage>();
-
-		foreach (TrprojFile.LanguageRecord languageRecord in trproj.SupportedLanguages)
-		{
-			var gameLanguage = new GameLanguage(
-				languageRecord.Name,
-				languageRecord.StringsFileName,
-				languageRecord.OutputFileName
-			);
-
-			if (gameLanguage.IsValid)
-				supportedLanguages.Add(gameLanguage);
-		}
-
-		if (supportedLanguages.Count == 0)
-			supportedLanguages.Add(DefaultInitialLanguage);
-
 		return new GameProject(
 			trproj.FilePath,
 			trproj.Name,
 			trproj.GameVersion,
-			trproj.LauncherFilePath,
 			trproj.ScriptDirectoryPath,
 			trproj.MapsDirectoryPath,
-			mapProjects,
-			supportedLanguages,
-			trproj.DefaultLanguageIndex,
-			trproj.TRNGPluginsDirectoryPath
+			trproj.TRNGPluginsDirectoryPath,
+			mapProjects
 		);
 	}
 }

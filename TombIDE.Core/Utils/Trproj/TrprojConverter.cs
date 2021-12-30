@@ -15,7 +15,6 @@ public static class TrprojConverter
 			FilePath = trprojV1.FilePath,
 			Name = trprojV1.Name,
 			GameVersion = trprojV1.GameVersion,
-			LauncherFilePath = trprojV1.LaunchFilePath,
 			ScriptDirectoryPath = trprojV1.ScriptPath,
 			MapsDirectoryPath = trprojV1.LevelsPath,
 			TRNGPluginsDirectoryPath = defaultTRNGPluginsDirectoryPath
@@ -29,9 +28,7 @@ public static class TrprojConverter
 				RootDirectoryPath = level.FolderPath,
 
 				StartupFileName = level.SpecificFile == TrprojV1.ProjectLevel.LastModifiedFileKey ?
-					string.Empty : level.SpecificFile,
-
-				OutputFileName = level.DataFileName
+					string.Empty : level.SpecificFile
 			});
 		}
 

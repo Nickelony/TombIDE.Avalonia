@@ -11,10 +11,8 @@ public static class TrprojFactory
 			FilePath = gameProject.ProjectFilePath,
 			Name = gameProject.Name,
 			GameVersion = gameProject.GameVersion,
-			LauncherFilePath = gameProject.LauncherFilePath,
 			ScriptDirectoryPath = gameProject.ScriptDirectoryPath,
 			MapsDirectoryPath = gameProject.MapsDirectoryPath,
-			DefaultLanguageIndex = gameProject.DefaultLanguageIndex,
 			TRNGPluginsDirectoryPath = gameProject.TRNGPluginsDirectoryPath
 		};
 
@@ -24,18 +22,7 @@ public static class TrprojFactory
 			{
 				Name = map.Name,
 				RootDirectoryPath = map.RootDirectoryPath,
-				StartupFileName = map.StartupFileName,
-				OutputFileName = map.OutputFileName
-			});
-		}
-
-		foreach (GameLanguage language in gameProject.SupportedLanguages)
-		{
-			trproj.SupportedLanguages.Add(new TrprojFile.LanguageRecord
-			{
-				Name = language.Name,
-				StringsFileName = language.StringsFileName,
-				OutputFileName = language.OutputFileName
+				StartupFileName = map.StartupFileName
 			});
 		}
 
