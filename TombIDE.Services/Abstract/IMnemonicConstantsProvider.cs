@@ -7,5 +7,5 @@ public interface IMnemonicConstantsProvider
 	string MnemonicConstantsXmlFilePath { get; set; }
 
 	IEnumerable<MnemonicConstant> GetInternalMnemonicConstants();
-	IEnumerable<MnemonicConstant> GetMnemonicConstantsFromPlugins(IEnumerable<TRNGPlugin> plugins);
+	IEnumerable<MnemonicConstant> GetMnemonicConstantsFromPlugins(TRNGPlugin[] plugins);
 }

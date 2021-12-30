@@ -21,7 +21,7 @@ public sealed class MnemonicConstantsProvider : IMnemonicConstantsProvider
 			yield return new MnemonicConstant(record.Name, record.DecimalValue, record.Description);
 	}
 
-	public IEnumerable<MnemonicConstant> GetMnemonicConstantsFromPlugins(IEnumerable<TRNGPlugin> plugins)
+	public IEnumerable<MnemonicConstant> GetMnemonicConstantsFromPlugins(TRNGPlugin[] plugins)
 	{
 		var result = new List<MnemonicConstant>();
 

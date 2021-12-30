@@ -12,7 +12,6 @@ public static class ProjectDirectoryUtils
 	public const string TR4Executable = "tomb4.exe";
 	public const string TR5Executable = "PCTomb5.exe";
 	public const string TENExecutable = "tombengine.exe";
-
 	public const string TRNGDllFile = "Tomb_NextGeneration.dll";
 
 	public static readonly string[] ValidGameExecutableNames = new string[]
@@ -33,7 +32,7 @@ public static class ProjectDirectoryUtils
 	/// <summary>
 	/// Finds a valid game executable file (e.g. tomb4.exe).
 	/// </summary>
-	/// <returns>Full launcher file path if one has been found, otherwise <see langword="null"/>.</returns>
+	/// <returns>Full game executable file path if one has been found, otherwise <see langword="null"/>.</returns>
 	public static string? FindValidGameExecutable(string engineDirectoryPath, GameVersion gameVersion)
 	{
 		string[] exeFiles = Directory.GetFiles(engineDirectoryPath, "*.exe", SearchOption.TopDirectoryOnly);
@@ -65,9 +64,8 @@ public static class ProjectDirectoryUtils
 		GameVersion.TR1 => TR1Executable,
 		GameVersion.TR2 => TR2Executable,
 		GameVersion.TR3 => TR3Executable,
-		GameVersion.TR4 => TR4Executable,
+		GameVersion.TR4 or GameVersion.TRNG => TR4Executable,
 		GameVersion.TR5 => TR5Executable,
-		GameVersion.TRNG => TR4Executable,
 		GameVersion.TEN => TENExecutable,
 		_ => throw new ArgumentException("Invalid game version.")
 	};

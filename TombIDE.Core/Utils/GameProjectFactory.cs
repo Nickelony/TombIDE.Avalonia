@@ -6,7 +6,8 @@ namespace TombIDE.Core.Utils;
 
 public static class GameProjectFactory
 {
-	public static GameProject CreateNew(string projectFilePath, string name, string scriptDirectoryPath, string mapsDirectoryPath, string? trngPluginsDirectoryPath = null)
+	public static GameProject CreateNew(string projectFilePath, string name,
+		string scriptDirectoryPath, string mapsDirectoryPath, string? trngPluginsDirectoryPath = null)
 		=> new(projectFilePath, name, scriptDirectoryPath, mapsDirectoryPath, trngPluginsDirectoryPath);
 
 	public static GameProject? FromTrproj(ITrprojFile trproj)
