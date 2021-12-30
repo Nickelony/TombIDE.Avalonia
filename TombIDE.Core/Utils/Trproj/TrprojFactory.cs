@@ -10,7 +10,6 @@ public static class TrprojFactory
 		{
 			FilePath = gameProject.ProjectFilePath,
 			Name = gameProject.Name,
-			GameVersion = gameProject.GameVersion,
 			ScriptDirectoryPath = gameProject.ScriptDirectoryPath,
 			MapsDirectoryPath = gameProject.MapsDirectoryPath,
 			TRNGPluginsDirectoryPath = gameProject.TRNGPluginsDirectoryPath

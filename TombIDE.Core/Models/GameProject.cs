@@ -12,11 +12,6 @@ public sealed class GameProject : ProjectBase
 	public string ProjectFilePath { get; set; }
 
 	/// <summary>
-	/// Game version the project is based on. (e.g. TR2, TR4, TRNG, TEN etc.)
-	/// </summary>
-	public GameVersion GameVersion { get; }
-
-	/// <summary>
 	/// Path of the directory where the project's script files are stored.
 	/// </summary>
 	public string ScriptDirectoryPath { get; set; }
@@ -66,70 +61,100 @@ public sealed class GameProject : ProjectBase
 			if (!Directory.Exists(engineDirectoryPath))
 				return RootDirectoryPath;
 
-			string? validGameExecutable = GameExecutableUtils.FindValidGameExecutable(engineDirectoryPath, GameVersion);
-			return validGameExecutable != null ? engineDirectoryPath : RootDirectoryPath;
+			string[] validGameExecutables = ProjectDirectoryUtils.FindAllValidGameExecutables(engineDirectoryPath);
+			return validGameExecutables.Length > 0 ? engineDirectoryPath : RootDirectoryPath;
+		}
+	}
+
+	/// <summary>
+	/// Game version the project is based on. (e.g. TR2, TR4, TRNG, TEN etc.)
+	/// </summary>
+	public GameVersion GameVersion
+	{
+		get
+		{
+			string engineDirectoryPath = EngineDirectoryPath;
+			string[] validGameExecutables = ProjectDirectoryUtils.FindAllValidGameExecutables(engineDirectoryPath);
+
+			if (validGameExecutables.Length == 0)
+				return GameVersion.Unknown;
+
+			string firstMatch = validGameExecutables.First();
+			GameVersion gameVersion = ProjectDirectoryUtils.GetGameVersionFromExecutableFile(firstMatch);
+
+			if (gameVersion == GameVersion.TR4)
+				return ProjectDirectoryUtils.HasTRNGDllFile(engineDirectoryPath) ? GameVersion.TRNG : GameVersion.TR4;
+
+			return gameVersion;
+		}
+	}
+
+	/// <summary>
+	/// Path of the file, which launches the game.
+	/// </summary>
+	public string? LauncherFilePath
+	{
+		get
+		{
+			string? launcherFilePath = ProjectDirectoryUtils.FindValidLauncher(RootDirectoryPath);
+
+			if (string.IsNullOrEmpty(launcherFilePath))
+				return ProjectDirectoryUtils.FindValidGameExecutable(EngineDirectoryPath, GameVersion);
+
+			return launcherFilePath;
+		}
+	}
+
+	public IEnumerable<string> AvailableLanguageFiles
+	{
+		get
+		{
+			var scriptDirectory = new DirectoryInfo(ScriptDirectoryPath);
+			FileInfo[] scriptFiles = scriptDirectory.GetFiles("*.txt", SearchOption.AllDirectories);
+
+			foreach (FileInfo file in scriptFiles)
+			{
+				if (ScriptFileUtils.IsLanguageFile(file.FullName))
+					yield return file.FullName;
+			}
+		}
+	}
+
+	public IEnumerable<TRNGPlugin> InstalledTRNGPlugins
+	{
+		get
+		{
+			if (string.IsNullOrEmpty(TRNGPluginsDirectoryPath))
+				yield break;
+
+			var pluginsDirectory = new DirectoryInfo(TRNGPluginsDirectoryPath);
+			DirectoryInfo[] pluginSubdirectories = pluginsDirectory.GetDirectories("*", SearchOption.TopDirectoryOnly);
+
+			foreach (DirectoryInfo directory in pluginSubdirectories)
+			{
+				var plugin = new TRNGPlugin(directory.FullName);
+
+				if (plugin.IsValid)
+					yield return plugin;
+			}
 		}
 	}
 
 	public override bool IsValid
-		=> GameVersion != GameVersion.Unknown
-		&& Directory.Exists(RootDirectoryPath);
+		=> Directory.Exists(RootDirectoryPath);
 
 	public override string Name { get; set; }
 
-	public GameProject(string projectFilePath, string name, GameVersion gameVersion,
-		string scriptDirectoryPath, string mapsDirectoryPath, string? trngPluginsDirectoryPath = null,
-		List<MapProject>? mapProjects = null)
+	public GameProject(string projectFilePath, string name,
+		string scriptDirectoryPath, string mapsDirectoryPath,
+		string? trngPluginsDirectoryPath = null, List<MapProject>? mapProjects = null)
 	{
 		ProjectFilePath = projectFilePath;
 		Name = name;
-		GameVersion = gameVersion;
 		ScriptDirectoryPath = scriptDirectoryPath;
 		MapsDirectoryPath = mapsDirectoryPath;
 		TRNGPluginsDirectoryPath = trngPluginsDirectoryPath;
 		MapProjects = mapProjects ?? new();
-	}
-
-	/// <summary>
-	/// Returns the path of the file, which launches the game.
-	/// </summary>
-	public string? GetLauncherFilePath()
-	{
-		string? launcherFilePath = GameExecutableUtils.FindValidLauncher(RootDirectoryPath);
-
-		if (string.IsNullOrEmpty(launcherFilePath))
-			return GameExecutableUtils.FindValidGameExecutable(EngineDirectoryPath, GameVersion);
-
-		return launcherFilePath;
-	}
-
-	public IEnumerable<string> GetLanguageFiles()
-	{
-		var scriptDirectory = new DirectoryInfo(ScriptDirectoryPath);
-		FileInfo[] scriptFiles = scriptDirectory.GetFiles("*.txt", SearchOption.AllDirectories);
-
-		foreach (FileInfo file in scriptFiles)
-		{
-			if (ScriptFileUtils.IsLanguageFile(file.FullName))
-				yield return file.FullName;
-		}
-	}
-
-	public IEnumerable<TRNGPlugin> GetInstalledTRNGPlugins()
-	{
-		if (string.IsNullOrEmpty(TRNGPluginsDirectoryPath))
-			yield break;
-
-		var pluginsDirectory = new DirectoryInfo(TRNGPluginsDirectoryPath);
-		DirectoryInfo[] pluginSubdirectories = pluginsDirectory.GetDirectories("*", SearchOption.TopDirectoryOnly);
-
-		foreach (DirectoryInfo directory in pluginSubdirectories)
-		{
-			var plugin = new TRNGPlugin(directory.FullName);
-
-			if (plugin.IsValid)
-				yield return plugin;
-		}
 	}
 
 	public void UpdateMapList()

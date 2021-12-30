@@ -9,7 +9,6 @@ public sealed class TrprojFile : ITrprojFile
 	[XmlAttribute] public int Version => 2;
 
 	[XmlAttribute] public string Name { get; set; } = string.Empty;
-	[XmlAttribute] public GameVersion GameVersion { get; set; } = GameVersion.Unknown;
 	[XmlAttribute] public string ScriptDirectoryPath { get; set; } = string.Empty;
 	[XmlAttribute] public string MapsDirectoryPath { get; set; } = string.Empty;
 	[XmlAttribute] public string? TRNGPluginsDirectoryPath { get; set; }

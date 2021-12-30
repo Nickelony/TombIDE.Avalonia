@@ -14,7 +14,6 @@ public static class TrprojConverter
 		{
 			FilePath = trprojV1.FilePath,
 			Name = trprojV1.Name,
-			GameVersion = trprojV1.GameVersion,
 			ScriptDirectoryPath = trprojV1.ScriptPath,
 			MapsDirectoryPath = trprojV1.LevelsPath,
 			TRNGPluginsDirectoryPath = defaultTRNGPluginsDirectoryPath

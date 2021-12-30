@@ -11,7 +11,6 @@ public sealed class V1 : ITrprojFile
 	[XmlIgnore] public int Version => 1;
 
 	[XmlElement] public string Name { get; set; } = string.Empty;
-	[XmlElement] public GameVersion GameVersion { get; set; } = GameVersion.Unknown;
 	[XmlElement] public string ScriptPath { get; set; } = string.Empty;
 	[XmlElement] public string LevelsPath { get; set; } = string.Empty;
 	[XmlArray] public List<ProjectLevel> Levels { get; set; } = new();
