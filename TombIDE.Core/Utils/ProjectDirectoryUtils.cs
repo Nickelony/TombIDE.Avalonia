@@ -90,5 +90,5 @@ public static class ProjectDirectoryUtils
 			return GameVersion.TEN;
 
 		return GameVersion.Unknown;
-	};
+	}
 }
