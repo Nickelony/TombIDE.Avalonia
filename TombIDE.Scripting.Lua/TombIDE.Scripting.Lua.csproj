@@ -10,4 +10,8 @@
     <ProjectReference Include="..\TombIDE.Scripting.Core\TombIDE.Scripting.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
 </Project>

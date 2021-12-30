@@ -7,7 +7,7 @@ namespace TombIDE.Core.Models;
 public sealed class GameProject : ProjectBase
 {
 	/// <summary>
-	/// Path of the project file. (e.g .trproj file path)
+	/// Path of the project file. (e.g .trproj file)
 	/// </summary>
 	public string ProjectFilePath { get; set; }
 
@@ -34,19 +34,7 @@ public sealed class GameProject : ProjectBase
 	public override string RootDirectoryPath
 	{
 		get => Path.GetDirectoryName(ProjectFilePath)!;
-		set
-		{
-			string oldDirectory = RootDirectoryPath;
-
-			ScriptDirectoryPath = ScriptDirectoryPath.Replace(oldDirectory, value);
-			MapsDirectoryPath = MapsDirectoryPath.Replace(oldDirectory, value);
-			TRNGPluginsDirectoryPath = TRNGPluginsDirectoryPath?.Replace(oldDirectory, value);
-
-			MapProjects.ForEach(map =>
-				map.RootDirectoryPath = map.RootDirectoryPath.Replace(oldDirectory, value));
-
-			ProjectFilePath = ProjectFilePath.Replace(oldDirectory, value);
-		}
+		set => UpdatePathRoots(RootDirectoryPath, value);
 	}
 
 	/// <summary>
@@ -62,86 +50,23 @@ public sealed class GameProject : ProjectBase
 				return RootDirectoryPath;
 
 			string[] validGameExecutables = ProjectDirectoryUtils.FindAllValidGameExecutables(engineDirectoryPath);
-			return validGameExecutables.Length > 0 ? engineDirectoryPath : RootDirectoryPath;
+			return validGameExecutables.Length == 1 ? engineDirectoryPath : RootDirectoryPath;
 		}
 	}
 
 	/// <summary>
 	/// Game version the project is based on. (e.g. TR2, TR4, TRNG, TEN etc.)
 	/// </summary>
-	public GameVersion GameVersion
-	{
-		get
-		{
-			string engineDirectoryPath = EngineDirectoryPath;
-			string[] validGameExecutables = ProjectDirectoryUtils.FindAllValidGameExecutables(engineDirectoryPath);
-
-			if (validGameExecutables.Length == 0)
-				return GameVersion.Unknown;
-
-			string firstMatch = validGameExecutables.First();
-			GameVersion gameVersion = ProjectDirectoryUtils.GetGameVersionFromExecutableFile(firstMatch);
-
-			if (gameVersion == GameVersion.TR4)
-				return ProjectDirectoryUtils.HasTRNGDllFile(engineDirectoryPath) ? GameVersion.TRNG : GameVersion.TR4;
-
-			return gameVersion;
-		}
-	}
+	public GameVersion GameVersion { get; }
 
 	/// <summary>
 	/// Path of the file, which launches the game.
 	/// </summary>
-	public string? LauncherFilePath
-	{
-		get
-		{
-			string? launcherFilePath = ProjectDirectoryUtils.FindValidLauncher(RootDirectoryPath);
-
-			if (string.IsNullOrEmpty(launcherFilePath))
-				return ProjectDirectoryUtils.FindValidGameExecutable(EngineDirectoryPath, GameVersion);
-
-			return launcherFilePath;
-		}
-	}
-
-	public IEnumerable<string> AvailableLanguageFiles
-	{
-		get
-		{
-			var scriptDirectory = new DirectoryInfo(ScriptDirectoryPath);
-			FileInfo[] scriptFiles = scriptDirectory.GetFiles("*.txt", SearchOption.AllDirectories);
-
-			foreach (FileInfo file in scriptFiles)
-			{
-				if (ScriptFileUtils.IsLanguageFile(file.FullName))
-					yield return file.FullName;
-			}
-		}
-	}
-
-	public IEnumerable<TRNGPlugin> InstalledTRNGPlugins
-	{
-		get
-		{
-			if (string.IsNullOrEmpty(TRNGPluginsDirectoryPath))
-				yield break;
-
-			var pluginsDirectory = new DirectoryInfo(TRNGPluginsDirectoryPath);
-			DirectoryInfo[] pluginSubdirectories = pluginsDirectory.GetDirectories("*", SearchOption.TopDirectoryOnly);
-
-			foreach (DirectoryInfo directory in pluginSubdirectories)
-			{
-				var plugin = new TRNGPlugin(directory.FullName);
-
-				if (plugin.IsValid)
-					yield return plugin;
-			}
-		}
-	}
+	public string? LauncherFilePath => FindGameLauncher();
 
 	public override bool IsValid
-		=> Directory.Exists(RootDirectoryPath);
+		=> Directory.Exists(RootDirectoryPath)
+		&& GameVersion != GameVersion.Unknown;
 
 	public override string Name { get; set; }
 
@@ -155,6 +80,34 @@ public sealed class GameProject : ProjectBase
 		MapsDirectoryPath = mapsDirectoryPath;
 		TRNGPluginsDirectoryPath = trngPluginsDirectoryPath;
 		MapProjects = mapProjects ?? new();
+
+		string[] validGameExecutables = ProjectDirectoryUtils.FindAllValidGameExecutables(EngineDirectoryPath);
+
+		if (validGameExecutables.Length == 1)
+		{
+			string match = validGameExecutables.First();
+			GameVersion gameVersion = ProjectDirectoryUtils.GetGameVersionFromExecutableFile(match);
+
+			if (gameVersion == GameVersion.TR4)
+			{
+				bool isTRNG = ProjectDirectoryUtils.HasTRNGDllFile(EngineDirectoryPath);
+				GameVersion = isTRNG ? GameVersion.TRNG : GameVersion.TR4;
+			}
+			else
+			{
+				GameVersion = gameVersion;
+			}
+		}
+		else
+		{
+			GameVersion = GameVersion.Unknown;
+		}
+	}
+
+	public void Save()
+	{
+		TrprojFile trproj = TrprojFactory.FromGameProject(this);
+		TrprojWriter.WriteToFile(ProjectFilePath, trproj);
 	}
 
 	public void UpdateMapList()
@@ -178,9 +131,42 @@ public sealed class GameProject : ProjectBase
 		}
 	}
 
-	public void Save()
+	public IEnumerable<TRNGPlugin> GetInstalledTRNGPlugins()
 	{
-		TrprojFile trproj = TrprojFactory.FromGameProject(this);
-		TrprojWriter.WriteToFile(ProjectFilePath, trproj);
+		if (string.IsNullOrEmpty(TRNGPluginsDirectoryPath))
+			yield break;
+
+		var pluginsDirectory = new DirectoryInfo(TRNGPluginsDirectoryPath);
+		DirectoryInfo[] pluginSubdirectories = pluginsDirectory.GetDirectories("*", SearchOption.TopDirectoryOnly);
+
+		foreach (DirectoryInfo directory in pluginSubdirectories)
+		{
+			var plugin = new TRNGPlugin(directory.FullName);
+
+			if (plugin.IsValid)
+				yield return plugin;
+		}
+	}
+
+	private string? FindGameLauncher()
+	{
+		string? launcherFilePath = ProjectDirectoryUtils.FindValidLauncher(RootDirectoryPath);
+
+		if (string.IsNullOrEmpty(launcherFilePath))
+			return ProjectDirectoryUtils.FindValidGameExecutable(EngineDirectoryPath, GameVersion);
+
+		return launcherFilePath;
+	}
+
+	private void UpdatePathRoots(string oldRootPath, string newRootPath)
+	{
+		ScriptDirectoryPath = ScriptDirectoryPath.Replace(oldRootPath, newRootPath);
+		MapsDirectoryPath = MapsDirectoryPath.Replace(oldRootPath, newRootPath);
+		TRNGPluginsDirectoryPath = TRNGPluginsDirectoryPath?.Replace(oldRootPath, newRootPath);
+
+		MapProjects.ForEach(map =>
+			map.RootDirectoryPath = map.RootDirectoryPath.Replace(oldRootPath, newRootPath));
+
+		ProjectFilePath = ProjectFilePath.Replace(oldRootPath, newRootPath);
 	}
 }

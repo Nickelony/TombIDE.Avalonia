@@ -1,4 +1,4 @@
-﻿namespace TombIDE.Core.Utils;
+﻿namespace TombIDE.Scripting.ClassicScript.Utils;
 
 public static class ScriptFileUtils
 {
