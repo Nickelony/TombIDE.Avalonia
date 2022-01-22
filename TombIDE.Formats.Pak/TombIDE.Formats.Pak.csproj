@@ -7,12 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TombIDE.Core\TombIDE.Core.csproj" />
-    <ProjectReference Include="..\TombIDE.Formats.Trproj\TombIDE.Formats.Trproj.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Bases\" />
+    <PackageReference Include="NetMiniZ" Version="1.2.2" />
   </ItemGroup>
 
 </Project>

@@ -1,13 +1,7 @@
-﻿using TombIDE.Core.Models.Interfaces;
+﻿namespace TombIDE.Core.Models;
 
-namespace TombIDE.Core.Models;
-
-public sealed record MnemonicConstant(string Name, short DecimalValue, string Description) : INamed
+public readonly record struct MnemonicConstant(string Name, short DecimalValue, string Description) : INamed
 {
-	public string Name { get; } = Name;
-	public short DecimalValue { get; } = DecimalValue;
-	public string Description { get; } = Description;
-
 	public string HexValue
 	{
 		get

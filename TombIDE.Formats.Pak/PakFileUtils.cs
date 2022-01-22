@@ -1,4 +1,4 @@
-﻿namespace TombIDE.Core.Utils;
+﻿namespace TombIDE.Formats.Pak;
 
 public static class PakFileUtils
 {

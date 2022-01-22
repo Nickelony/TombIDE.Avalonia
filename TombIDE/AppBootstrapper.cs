@@ -13,7 +13,7 @@ public class AppBootstrapper
 	{
 		IMutableDependencyResolver mutable = Locator.CurrentMutable;
 
-		mutable.RegisterConstant(() => new GameProjectDbService(""), typeof(IGameProjectDbService));
-		mutable.RegisterConstant(() => new MnemonicConstantsProvider(""), typeof(IGameProjectDbService));
+		mutable.RegisterConstant(() => new TrprojDbService(""), typeof(ITrprojService));
+		mutable.RegisterConstant(() => new MnemonicConstantsProvider(""), typeof(ITrprojService));
 	}
 }

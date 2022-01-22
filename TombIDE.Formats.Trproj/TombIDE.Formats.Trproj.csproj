@@ -8,11 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TombIDE.Core\TombIDE.Core.csproj" />
-    <ProjectReference Include="..\TombIDE.Formats.Trproj\TombIDE.Formats.Trproj.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Bases\" />
   </ItemGroup>
 
 </Project>

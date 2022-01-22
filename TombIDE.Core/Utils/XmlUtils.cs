@@ -1,4 +1,7 @@
-﻿namespace TombIDE.Core.Utils;
+﻿using System.Xml;
+using System.Xml.Serialization;
+
+namespace TombIDE.Core.Utils;
 
 public static class XmlUtils
 {

@@ -1,5 +1,4 @@
 ﻿using TombIDE.Core.Extensions;
-using TombIDE.Core.Models.Interfaces;
 
 namespace TombIDE.Core.Models;
 

@@ -1,11 +1,9 @@
-﻿using TombIDE.Core.Models.Interfaces;
-
-namespace TombIDE.Core.Models;
+﻿namespace TombIDE.Formats.Trproj.V2;
 
 [XmlRoot("GameProject")]
-public sealed class TrprojFile : ITrprojFile
+public sealed class Trproj : ITrproj
 {
-	[XmlIgnore] public string FilePath { get; set; } = string.Empty;
+	[XmlIgnore] public FileStream ProjectFile { get; init; }
 	[XmlAttribute] public int Version => 2;
 
 	[XmlAttribute] public string Name { get; set; } = string.Empty;
@@ -13,6 +11,12 @@ public sealed class TrprojFile : ITrprojFile
 	[XmlAttribute] public string MapsDirectoryPath { get; set; } = string.Empty;
 	[XmlAttribute] public string? TRNGPluginsDirectoryPath { get; set; }
 	[XmlArray] public List<MapRecord> MapRecords { get; set; } = new();
+
+	public Trproj(string filePath) : this(File.Open(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+	{ }
+
+	public Trproj(FileStream file)
+		=> ProjectFile = file;
 
 	public void MakePathsRelative(string baseDirectory)
 	{
@@ -36,16 +40,5 @@ public sealed class TrprojFile : ITrprojFile
 		MapRecords.ForEach(map => map.MakePathsAbsolute(baseDirectory));
 	}
 
-	public sealed class MapRecord : ISupportsRelativePaths
-	{
-		[XmlAttribute] public string Name { get; set; } = string.Empty;
-		[XmlAttribute] public string RootDirectoryPath { get; set; } = string.Empty;
-		[XmlAttribute] public string StartupFileName { get; set; } = string.Empty;
-
-		public void MakePathsAbsolute(string baseDirectory)
-			=> RootDirectoryPath = Path.GetFullPath(RootDirectoryPath, baseDirectory);
-
-		public void MakePathsRelative(string baseDirectory)
-			=> RootDirectoryPath = Path.GetRelativePath(baseDirectory, RootDirectoryPath);
-	}
+	public void Dispose() => ProjectFile.Dispose();
 }

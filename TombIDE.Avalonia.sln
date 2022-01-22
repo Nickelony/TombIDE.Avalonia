@@ -9,15 +9,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TombIDE.Core", "TombIDE.Cor
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TombIDE.Services", "TombIDE.Services\TombIDE.Services.csproj", "{96126049-F8EB-4116-B193-EB109BFD800A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TombIDE.Scripting", "TombIDE.Scripting\TombIDE.Scripting.csproj", "{5AF64D29-6230-46D6-961F-73C757D53150}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TombIDE.Scripting", "TombIDE.Scripting\TombIDE.Scripting.csproj", "{5AF64D29-6230-46D6-961F-73C757D53150}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TombIDE.Scripting.Core", "TombIDE.Scripting.Core\TombIDE.Scripting.Core.csproj", "{DADCA12D-6DEF-484C-AD42-37AA0AE3A978}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TombIDE.Scripting.Core", "TombIDE.Scripting.Core\TombIDE.Scripting.Core.csproj", "{DADCA12D-6DEF-484C-AD42-37AA0AE3A978}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TombIDE.Scripting.ClassicScript", "TombIDE.Scripting.ClassicScript\TombIDE.Scripting.ClassicScript.csproj", "{7C502483-DC7C-4EAC-A5D6-D8B9B5CD090B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TombIDE.Scripting.ClassicScript", "TombIDE.Scripting.ClassicScript\TombIDE.Scripting.ClassicScript.csproj", "{7C502483-DC7C-4EAC-A5D6-D8B9B5CD090B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TombIDE.Scripting.Lua", "TombIDE.Scripting.Lua\TombIDE.Scripting.Lua.csproj", "{49776E47-B3EF-4F54-9717-4AD38F02E89D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TombIDE.Scripting.Lua", "TombIDE.Scripting.Lua\TombIDE.Scripting.Lua.csproj", "{49776E47-B3EF-4F54-9717-4AD38F02E89D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripting", "Scripting", "{01139761-76FC-47A9-9DDD-E7302304FFD3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TombIDE.Formats.Trproj", "TombIDE.Formats.Trproj\TombIDE.Formats.Trproj.csproj", "{11AB9B2E-44CC-45DE-BB16-B837E1963498}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TombIDE.Formats.Pak", "TombIDE.Formats.Pak\TombIDE.Formats.Pak.csproj", "{2EC79BD1-B1C7-4B82-A6F2-6984C1F8BCE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +57,14 @@ Global
 		{49776E47-B3EF-4F54-9717-4AD38F02E89D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49776E47-B3EF-4F54-9717-4AD38F02E89D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49776E47-B3EF-4F54-9717-4AD38F02E89D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11AB9B2E-44CC-45DE-BB16-B837E1963498}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11AB9B2E-44CC-45DE-BB16-B837E1963498}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11AB9B2E-44CC-45DE-BB16-B837E1963498}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11AB9B2E-44CC-45DE-BB16-B837E1963498}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2EC79BD1-B1C7-4B82-A6F2-6984C1F8BCE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2EC79BD1-B1C7-4B82-A6F2-6984C1F8BCE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2EC79BD1-B1C7-4B82-A6F2-6984C1F8BCE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2EC79BD1-B1C7-4B82-A6F2-6984C1F8BCE8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

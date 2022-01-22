@@ -4,7 +4,7 @@ namespace TombIDE.Core.Utils.Trproj;
 
 public static class TrprojFactory
 {
-	public static TrprojFile FromGameProject(GameProject gameProject)
+	public static TrprojFile FromGameProject(GameProjectRecord gameProject)
 	{
 		var trproj = new TrprojFile
 		{
@@ -15,7 +15,7 @@ public static class TrprojFactory
 			TRNGPluginsDirectoryPath = gameProject.TRNGPluginsDirectoryPath
 		};
 
-		foreach (MapProject map in gameProject.MapProjects)
+		foreach (MapProjectRecord map in gameProject.MapProjects)
 		{
 			trproj.MapRecords.Add(new TrprojFile.MapRecord
 			{

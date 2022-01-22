@@ -5,19 +5,19 @@ using TombIDE.Services.Records;
 
 namespace TombIDE.Services;
 
-public sealed class MnemonicConstantsProvider : IMnemonicConstantsProvider
+public sealed class MnemonicConstantsProvider : IMnemonicConstantsService
 {
 	public string MnemonicConstantsXmlFilePath { get; set; }
 
 	public MnemonicConstantsProvider(string mnemonicConstantsXmlFilePath)
 		=> MnemonicConstantsXmlFilePath = mnemonicConstantsXmlFilePath;
 
-	public IEnumerable<MnemonicConstant> GetInternalMnemonicConstants()
+	public IEnumerable<MnemonicConstant> GetLocalMnemonicConstants()
 	{
-		IEnumerable<MnemonicConstantRecord> records =
-			XmlUtils.ReadXmlFile<IEnumerable<MnemonicConstantRecord>>(MnemonicConstantsXmlFilePath);
+		IEnumerable<MnemonicConstantDbRecord> records =
+			XmlUtils.ReadXmlFile<IEnumerable<MnemonicConstantDbRecord>>(MnemonicConstantsXmlFilePath);
 
-		foreach (MnemonicConstantRecord record in records)
+		foreach (MnemonicConstantDbRecord record in records)
 			yield return new MnemonicConstant(record.Name, record.DecimalValue, record.Description);
 	}
 

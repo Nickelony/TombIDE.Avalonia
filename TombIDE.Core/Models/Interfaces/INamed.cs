@@ -8,5 +8,5 @@ public interface INamed
 	/// <summary>
 	/// Displayed name of the object.
 	/// </summary>
-	string Name { get; }
+	string Name { get; set; }
 }

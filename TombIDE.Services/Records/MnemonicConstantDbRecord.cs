@@ -2,7 +2,7 @@
 
 namespace TombIDE.Services.Records;
 
-public sealed record MnemonicConstantRecord(string Name, short DecimalValue, string Description)
+public sealed record MnemonicConstantDbRecord(string Name, short DecimalValue, string Description)
 {
 	[XmlAttribute] public string Name { get; } = Name;
 	[XmlAttribute] public short DecimalValue { get; } = DecimalValue;

@@ -7,14 +7,14 @@ using TombIDE.Services.Records;
 
 namespace TombIDE.Services;
 
-public sealed class GameProjectDbService : IGameProjectDbService
+public sealed class TrprojDbService : ITrprojService
 {
-	public string GameProjectsXmlFilePath { get; set; }
+	public string DbFilePath { get; set; }
 
-	public GameProjectDbService(string gameProjectsXmlFilePath)
-		=> GameProjectsXmlFilePath = gameProjectsXmlFilePath;
+	public TrprojDbService(string dbFilePath)
+		=> DbFilePath = dbFilePath;
 
-	public void AddProject(GameProject project)
+	public void AddProject(GameProjectRecord project)
 	{
 		var projectRecords = GetGameProjectRecords().ToList();
 
@@ -27,30 +27,30 @@ public sealed class GameProjectDbService : IGameProjectDbService
 		var newProjectRecord = new GameProjectRecord(project.ProjectFilePath, DateTime.Now);
 
 		projectRecords.Add(newProjectRecord);
-		XmlUtils.SaveXmlFile(GameProjectsXmlFilePath, projectRecords);
+		XmlUtils.SaveXmlFile(DbFilePath, projectRecords);
 	}
 
-	public IEnumerable<GameProject> GetGameProjects()
+	public IEnumerable<GameProjectRecord> GetGameProjects()
 	{
-		IEnumerable<GameProjectRecord> projectRecords = GetGameProjectRecords();
+		IEnumerable<TrprojSessionRecord> projectRecords = GetGameProjectRecords();
 
-		foreach (GameProjectRecord record in projectRecords)
+		foreach (TrprojSessionRecord record in projectRecords)
 		{
 			ITrprojFile? trproj = TrprojReader.ReadFile(record.ProjectFilePath);
 
 			if (trproj == null)
 				continue;
 
-			GameProject? gameProject = GameProjectFactory.FromTrproj(trproj);
+			GameProjectRecord? gameProject = GameProjectFactory.FromTrproj(trproj);
 
 			if (gameProject != null && gameProject.IsValid)
 				yield return gameProject;
 		}
 	}
 
-	public IEnumerable<GameProjectRecord> GetGameProjectRecords()
-		=> XmlUtils.ReadXmlFile<IEnumerable<GameProjectRecord>>(GameProjectsXmlFilePath);
+	public IEnumerable<TrprojSessionRecord> GetGameProjectRecords()
+		=> XmlUtils.ReadXmlFile<IEnumerable<TrprojSessionRecord>>(DbFilePath);
 
-	public GameProject? GetGameProject(Predicate<GameProject> match)
+	public GameProjectRecord? GetGameProject(Predicate<GameProjectRecord> match)
 		=> GetGameProjects().ToList().Find(match);
 }

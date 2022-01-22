@@ -6,8 +6,7 @@
 public interface IRooted
 {
 	/// <summary>
-	/// Path of the object's main directory.
-	/// <para>This property can be used as a unique identifier for the object.</para>
+	/// The object's main directory.
 	/// </summary>
-	string RootDirectoryPath { get; }
+	DirectoryInfo RootDirectory { get; }
 }
