@@ -1,7 +1,7 @@
 ﻿using TombIDE.Core.Models;
 using TombIDE.Services.Generic;
 
-namespace TombIDE.Services.Abstract;
+namespace TombIDE.Services;
 
 public interface IMnemonicConstantsService : IXmlDatabaseService
 {

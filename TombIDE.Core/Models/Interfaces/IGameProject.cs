@@ -8,25 +8,25 @@ public interface IGameProject : IProject
 	/// <summary>
 	/// The project file. (e.g .trproj file)
 	/// </summary>
-	FileInfo ProjectFile { get; set; }
+	FileInfo ProjectFile { get; }
 
 	/// <summary>
 	/// The directory where the project's script files are stored.
 	/// </summary>
-	DirectoryInfo ScriptDirectory { get; set; }
+	DirectoryInfo ScriptDirectory { get; }
 
 	/// <summary>
 	/// The directory where the project's newly created maps will be stored.
 	/// </summary>
-	DirectoryInfo MapsDirectory { get; set; }
+	DirectoryInfo MapsDirectory { get; }
 
 	/// <summary>
 	/// The directory from which the project should be reading TRNG plugins.
 	/// </summary>
-	DirectoryInfo? TRNGPluginsDirectory { get; set; }
+	DirectoryInfo? TRNGPluginsDirectory { get; }
 
 	/// <summary>
 	/// A list of the project's maps.
 	/// </summary>
-	List<IMapProject> Maps { get; set; }
+	List<IMapProject> Maps { get; }
 }

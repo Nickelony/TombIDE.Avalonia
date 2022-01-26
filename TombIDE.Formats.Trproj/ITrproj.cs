@@ -5,10 +5,10 @@ namespace TombIDE.Formats.Trproj;
 /// <summary>
 /// Defines the base of a .trproj file.
 /// </summary>
-public interface ITrproj : IDisposable, IVersioned, ISupportsRelativePaths
+public interface ITrproj : IVersioned
 {
 	/// <summary>
-	/// The .trproj file stream.
+	/// The .trproj file.
 	/// </summary>
-	public FileStream ProjectFile { get; }
+	public FileInfo ProjectFile { get; }
 }

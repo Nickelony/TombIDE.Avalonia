@@ -11,8 +11,4 @@
     <ProjectReference Include="..\TombIDE.Formats.Trproj\TombIDE.Formats.Trproj.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Bases\" />
-  </ItemGroup>
-
 </Project>

@@ -1,11 +1,11 @@
 ﻿using TombIDE.Core.Models.Interfaces;
 using TombIDE.Formats.Trproj;
-using TombIDE.Services.Generic;
-using TombIDE.Services.Records;
+using TrprojV1 = TombIDE.Formats.Trproj.V1.Trproj;
+using TrprojV2 = TombIDE.Formats.Trproj.V2.Trproj;
 
-namespace TombIDE.Services.Abstract;
+namespace TombIDE.Services;
 
-public interface ITrprojService : IXmlDatabaseService
+public interface ITrprojService
 {
 	/// <summary>
 	/// Creates a trproj data structure from file data.
@@ -22,4 +22,12 @@ public interface ITrprojService : IXmlDatabaseService
 	/// </summary>
 	/// <returns><see langword="true" /> if saving was successful, otherwise <see langword="false" />.</returns>
 	bool SaveTrprojToFile(ITrproj trproj, string filePath);
+
+	/// <summary>
+	/// Converts a trproj V1 data structure to a V2 data structure.
+	/// </summary>
+	TrprojV2 ConvertV1ToV2(TrprojV1 trprojV1);
+
+	ITrproj MakePathsRelative(ITrproj trproj, string baseDirectory);
+	ITrproj MakePathsAbsolute(ITrproj trproj, string baseDirectory);
 }

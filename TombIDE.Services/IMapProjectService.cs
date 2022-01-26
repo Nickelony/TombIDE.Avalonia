@@ -1,6 +1,6 @@
 ﻿using TombIDE.Core.Models.Interfaces;
 
-namespace TombIDE.Services.Generic;
+namespace TombIDE.Services;
 
 public interface IMapProjectService : IProjectService<IMapProject>
 {
