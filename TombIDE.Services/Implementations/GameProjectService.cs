@@ -1,96 +1,113 @@
 ﻿using System.Diagnostics;
+using TombIDE.Core;
 using TombIDE.Core.Extensions;
+using TombIDE.Core.Formats;
 using TombIDE.Core.Models;
-using TombIDE.Core.Models.Interfaces;
-using TombIDE.Formats.Trproj;
-using TombIDE.Formats.Trproj.V2;
-using TrprojV1 = TombIDE.Formats.Trproj.V1.Trproj;
-using TrprojV2 = TombIDE.Formats.Trproj.V2.Trproj;
+using TombIDE.Core.Models.Projects;
+using TombIDE.Core.Utils;
+using TrprojV1 = TombIDE.Core.Formats.Trproj.V1.Trproj;
+using TrprojV2 = TombIDE.Core.Formats.Trproj.V2.Trproj;
 
 namespace TombIDE.Services;
 
 public class GameProjectService : IGameProjectService
 {
+	public const string DefaultProjectFileName = "project.trproj";
+
+	#region Construction
+
 	private readonly ITrprojService _trprojService;
 	private readonly IMapProjectService _mapProjectService;
+	private readonly ITRNGPluginService _trngPluginService;
 
-	public GameProjectService(ITrprojService trprojService, IMapProjectService mapProjectService)
+	public GameProjectService(ITrprojService trprojService, IMapProjectService mapProjectService, ITRNGPluginService trngPluginService)
 	{
 		_trprojService = trprojService;
 		_mapProjectService = mapProjectService;
+		_trngPluginService = trngPluginService;
 	}
+
+	#endregion Construction
 
 	#region Factory
 
-	public IGameProject CreateNewProject(string name, string projectFilePath,
+	public IGameProject CreateNewProject(string name, string rootDirectoryPath,
 		string scriptDirectoryPath, string mapsDirectoryPath, string? trngPluginsDirectoryPath = null,
-		List<IMapProject>? maps = null)
+		IEnumerable<DirectoryInfo>? externalMapSubdirectories = null)
 	{
-		string rootDirectoryPath = Path.GetDirectoryName(projectFilePath)!;
-		DirectoryInfo? trngPluginsDirectory = null;
-
-		if (trngPluginsDirectoryPath != null)
-			trngPluginsDirectory = new DirectoryInfo(trngPluginsDirectoryPath);
-
-		return new GameProject(name,
-			new FileInfo(projectFilePath),
-			new DirectoryInfo(rootDirectoryPath),
-			new DirectoryInfo(scriptDirectoryPath),
-			new DirectoryInfo(mapsDirectoryPath),
-			maps ?? new List<IMapProject>(),
-			trngPluginsDirectory
-		);
+		return new GameProject(name, rootDirectoryPath,
+			scriptDirectoryPath, mapsDirectoryPath, trngPluginsDirectoryPath,
+			externalMapSubdirectories);
 	}
 
 	public IGameProject CreateFromFile(string projectFilePath)
 	{
 		ITrproj trproj = _trprojService.CreateFromFile(projectFilePath);
-		return CreateFromTrproj(trproj);
+		string rootDirectoryPath = Path.GetDirectoryName(projectFilePath)!;
+		return CreateFromTrproj(trproj, rootDirectoryPath);
 	}
 
-	private IGameProject CreateFromTrproj(ITrproj trproj)
+	private IGameProject CreateFromTrproj(ITrproj trproj, string rootDirectoryPath)
 	{
 		if (trproj is TrprojV1 v1)
-			return CreateFromTrproj(v1);
-		else if (trproj is TrprojV2 latest)
-			return CreateFromTrproj(latest);
-		else
-			throw new ArgumentException("Trproj data structure is invalid.", nameof(trproj));
+			return CreateFromTrproj(v1, rootDirectoryPath);
+		else if (trproj is TrprojV2 v2)
+			return CreateFromTrproj(v2, rootDirectoryPath);
+
+		throw new ArgumentException(
+			"Given trproj data structure is invalid.",
+			nameof(trproj));
 	}
 
-	private IGameProject CreateFromTrproj(TrprojV1 trproj)
+	private IGameProject CreateFromTrproj(TrprojV1 trproj, string rootDirectoryPath)
 	{
 		TrprojV2 trprojV2 = _trprojService.ConvertV1ToV2(trproj);
-		return CreateFromTrproj(trprojV2);
+		return CreateFromTrproj(trprojV2, rootDirectoryPath);
 	}
 
-	private IGameProject CreateFromTrproj(TrprojV2 trproj)
+	private IGameProject CreateFromTrproj(TrprojV2 trproj, string rootDirectoryPath)
 	{
-		var mapProjects = new List<IMapProject>();
-
-		foreach (MapRecord mapRecord in trproj.MapRecords)
-		{
-			var mapProject = new MapProject(
-				mapRecord.Name,
-				mapRecord.RootDirectoryPath,
-				mapRecord.StartupFileName
-			);
-
-			if (_mapProjectService.IsValidProject(mapProject))
-				mapProjects.Add(mapProject);
-		}
+		IEnumerable<DirectoryInfo> externalMapSubdirectories = trproj.ExternalMapSubdirectoryPaths
+			.Select(path =>
+			{
+				var directory = new DirectoryInfo(path);
+				return directory.Exists && _mapProjectService.IsValidMapSubdirectory(directory) ?
+					directory : null;
+			})
+			.Where(directory => directory != null)!;
 
 		return CreateNewProject(
 			trproj.ProjectName,
-			trproj.ProjectFile.FullName,
+			rootDirectoryPath,
 			trproj.ScriptDirectoryPath,
 			trproj.MapsDirectoryPath,
 			trproj.TRNGPluginsDirectoryPath,
-			mapProjects
+			externalMapSubdirectories
 		);
 	}
 
 	#endregion Factory
+
+	#region Public methods
+
+	public IEnumerable<IMapProject> GetAllMaps(IGameProject game)
+	{
+		foreach (DirectoryInfo directory in game.MapsDirectory.GetDirectories("*", SearchOption.TopDirectoryOnly))
+		{
+			IMapProject map = _mapProjectService.CreateFromDirectory(directory.FullName);
+
+			if (_mapProjectService.IsValidProject(map))
+				yield return map;
+		}
+
+		foreach (DirectoryInfo directory in game.ExternalMapSubdirectories)
+		{
+			IMapProject map = _mapProjectService.CreateFromDirectory(directory.FullName);
+
+			if (_mapProjectService.IsValidProject(map))
+				yield return map;
+		}
+	}
 
 	public DirectoryInfo GetEngineDirectory(IGameProject game)
 	{
@@ -100,19 +117,46 @@ public class GameProjectService : IGameProjectService
 			return game.RootDirectory;
 
 		var engineDirectory = new DirectoryInfo(engineDirectoryPath);
-		return FindValidGameExecutable(engineDirectory) != null ? engineDirectory : game.RootDirectory;
+
+		return FindValidEngineExecutable(engineDirectory) != null ?
+			engineDirectory : game.RootDirectory;
 	}
 
 	public FileInfo GetGameLauncher(IGameProject game)
 	{
-		FileInfo? launcherFilePath = FindValidLauncher(game.RootDirectory);
-		return launcherFilePath ?? FindGameExecutable(game);
+		FileInfo? launcherFilePath = FindValidGameLauncher(game.RootDirectory);
+
+		if (launcherFilePath != null)
+			return launcherFilePath;
+
+		DirectoryInfo engineDirectory = GetEngineDirectory(game);
+		FileInfo? validEngineExecutable = FindValidEngineExecutable(engineDirectory);
+
+		if (validEngineExecutable != null)
+			return validEngineExecutable;
+
+		throw new ArgumentException(
+			"Given game project does not have a valid game launcher file.",
+			nameof(game));
+	}
+
+	public FileInfo GetEngineExecutable(IGameProject game)
+	{
+		DirectoryInfo engineDirectory = GetEngineDirectory(game);
+		FileInfo? validEngineExecutable = FindValidEngineExecutable(engineDirectory);
+
+		if (validEngineExecutable != null)
+			return validEngineExecutable;
+
+		throw new ArgumentException(
+			"Given game project does not have a valid engine executable file.",
+			nameof(game));
 	}
 
 	public GameVersion DetectGameVersion(IGameProject game)
 	{
 		DirectoryInfo engineDirectory = GetEngineDirectory(game);
-		FileInfo? validGameExecutable = FindValidGameExecutable(engineDirectory);
+		FileInfo? validGameExecutable = FindValidEngineExecutable(engineDirectory);
 
 		if (validGameExecutable == null)
 			return GameVersion.Unknown;
@@ -128,100 +172,53 @@ public class GameProjectService : IGameProjectService
 		return gameVersion;
 	}
 
-	public IEnumerable<TRNGPlugin> GetInstalledTRNGPlugins(IGameProject game)
+	public IEnumerable<DirectoryInfo> GetInstalledTRNGPluginDirectories(IGameProject game)
 	{
 		if (game.TRNGPluginsDirectory == null)
-			yield break;
+			return new List<DirectoryInfo>();
 
 		DirectoryInfo[] pluginSubdirectories = game.TRNGPluginsDirectory.GetDirectories("*", SearchOption.TopDirectoryOnly);
-
-		foreach (DirectoryInfo directory in pluginSubdirectories)
-		{
-			var plugin = new TRNGPlugin(directory.FullName);
-
-			if (plugin.IsValid)
-				yield return plugin;
-		}
+		return pluginSubdirectories.Where(directory => _trngPluginService.IsValidPluginDirectory(directory));
 	}
 
-	public bool IsValidProject(IGameProject project) => throw new NotImplementedException();
+	public bool IsValidProject(IGameProject project)
+		=> project.RootDirectory.Exists;
 
-	public void MoveRootDirectory(IGameProject project, string newRootPath)
+	public void SaveProject(IGameProject project)
 	{
-		string oldRootPath = project.RootDirectory.FullName;
-		string? newRootPath = DirectoryUtils.RenameDirectoryEx(project.RootDirectory, newName);
+		string filePath = Path.Combine(project.RootDirectory.FullName, DefaultProjectFileName);
+		ITrproj trproj = _trprojService.CreateFromGameProject(project);
 
-		if (newRootPath != null)
-		{
-			project.RootDirectory = new DirectoryInfo(newRootPath);
-
-			project.ProjectFile = new FileInfo(project.ProjectFile.FullName.Replace(oldRootPath, newRootPath));
-
-			if (Project.ScriptDirectory.FullName.Contains(oldRootPath))
-				Project.ScriptDirectory = new DirectoryInfo(Project.ScriptDirectory.FullName.Replace(oldRootPath, newRootPath));
-
-			if (Project.MapsDirectory.FullName.Contains(oldRootPath))
-				Project.MapsDirectory = new DirectoryInfo(Project.MapsDirectory.FullName.Replace(oldRootPath, newRootPath));
-
-			if (Project.TRNGPluginsDirectory != null && Project.TRNGPluginsDirectory.FullName.Contains(oldRootPath))
-				Project.TRNGPluginsDirectory = new DirectoryInfo(Project.TRNGPluginsDirectory.FullName.Replace(oldRootPath, newRootPath));
-
-			foreach (IMapProject map in _maps.Select(map => map.Project))
-			{
-				if (map.RootDirectory.FullName.Contains(oldRootPath))
-					map.RootDirectory = new DirectoryInfo(map.RootDirectory.FullName.Replace(oldRootPath, newRootPath));
-			}
-		}
+		_trprojService.SaveToFile(filePath, trproj);
 	}
 
-	public void SaveProject(IGameProject game)
-	{
-		ITrproj trproj = _trprojService.CreateFromGameProject(game);
-		_trprojService.SaveTrprojToFile(trproj, trproj.ProjectFile.FullName);
-	}
+	#endregion Public methods
 
-	private FileInfo? FindValidGameLauncher(IGameProject game)
+	#region Private methods
+
+	private static FileInfo? FindValidGameLauncher(DirectoryInfo searchDirectory)
 	{
-		DirectoryInfo searchDirectory = game.RootDirectory;
 		FileInfo[] exeFiles = searchDirectory.GetFiles("*.exe", SearchOption.TopDirectoryOnly);
+
 		return Array.Find(exeFiles, file =>
 			FileVersionInfo.GetVersionInfo(file.FullName).OriginalFilename == "launch.exe");
 	}
 
-	private FileInfo? FindValidGameExecutable(DirectoryInfo searchDirectory)
+	private static FileInfo? FindValidEngineExecutable(DirectoryInfo searchDirectory)
 	{
 		FileInfo[] exeFiles = searchDirectory.GetFiles("*.exe", SearchOption.TopDirectoryOnly);
 
-		return Array.Find(exeFiles, file => file.Name
-			.BulkStringComparision(StringComparison.OrdinalIgnoreCase, Constants.ValidGameExecutableNames));
+		return Array.Find(exeFiles, file =>
+			file.Name.BulkStringComparision(StringComparison.OrdinalIgnoreCase, Constants.ValidGameExeNames));
 	}
 
-	private bool HasTRNGDllFile(DirectoryInfo searchDirectory)
+	private static bool HasTRNGDllFile(DirectoryInfo searchDirectory)
 	{
 		FileInfo[] dllFiles = searchDirectory.GetFiles("*.dll", SearchOption.TopDirectoryOnly);
 
 		return Array.Exists(dllFiles, file => file.Name
-			.Equals(Constants.TRNGDll, StringComparison.OrdinalIgnoreCase));
+			.Equals(Constants.TRNGDllName, StringComparison.OrdinalIgnoreCase));
 	}
 
-	private IEnumerable<IMapProject> ScanForNewMapDirectories()
-	{
-		DirectoryInfo[] mapSubdirectories = Project.MapsDirectory.GetDirectories("*", SearchOption.TopDirectoryOnly);
-
-		foreach (DirectoryInfo directory in mapSubdirectories)
-		{
-			bool mapAlreadyOnList = _maps
-				.Exists(map => map.Project.RootDirectory.FullName
-					.Equals(directory.FullName, StringComparison.OrdinalIgnoreCase));
-
-			if (mapAlreadyOnList)
-				continue;
-
-			var newMapProject = new MapProject(directory.Name, directory.FullName);
-			var mapService = new MapContext(newMapProject);
-
-			if (mapService.IsValid)
-				yield return mapService;
-		}
-	}
+	#endregion Private methods
 }

@@ -1,7 +1,4 @@
-﻿using System.Xml;
-using System.Xml.Serialization;
-
-namespace TombIDE.Core.Utils;
+﻿namespace TombIDE.Core.Utils;
 
 public static class XmlUtils
 {
@@ -27,9 +24,9 @@ public static class XmlUtils
 		return (T)serializer.Deserialize(reader)!;
 	}
 
-	public static void SaveXmlFile<T>(string filePath, T content)
+	public static void SaveXmlFile<T>(string filePath, T content, XmlWriterSettings? settings = null)
 	{
-		using var writer = new StreamWriter(filePath);
+		using var writer = XmlWriter.Create(filePath, settings);
 		var serializer = new XmlSerializer(typeof(T));
 		serializer.Serialize(writer, content);
 	}

@@ -54,7 +54,6 @@
     <PackageReference Include="ReactiveUI.Validation" Version="2.2.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TombIDE.Core\TombIDE.Core.csproj" />
     <ProjectReference Include="..\TombIDE.Services\TombIDE.Services.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -101,6 +100,9 @@
     <Folder Include="ProjectManager\Pages\" />
     <Folder Include="ScriptingStudio\Docks\" />
     <Folder Include="Styles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
   <ItemGroup>
     <AvaloniaXaml Update="Controls\ImageTextView.axaml">

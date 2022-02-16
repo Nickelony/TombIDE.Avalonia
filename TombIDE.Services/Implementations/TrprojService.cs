@@ -1,6 +1,7 @@
-﻿using TombIDE.Core.Models.Interfaces;
-using TombIDE.Formats.Trproj;
-using TombIDE.Services.Generic;
+﻿using System.Xml;
+using System.Xml.Serialization;
+using TombIDE.Core.Formats;
+using TombIDE.Core.Utils;
 using MapRecordV1 = TombIDE.Formats.Trproj.V1.MapRecord;
 using MapRecordV2 = TombIDE.Formats.Trproj.V2.MapRecord;
 using TrprojV1 = TombIDE.Formats.Trproj.V1.Trproj;
@@ -39,11 +40,84 @@ public sealed class TrprojService : ITrprojService
 		return result;
 	}
 
-	public ITrproj CreateFromFile(string trprojFilePath) => throw new NotImplementedException();
+	public ITrproj CreateFromFile(string trprojFilePath)
+	{
+		if (!XmlUtils.IsXmlDocument(trprojFilePath, out XmlDocument document))
+			return null;
 
-	public ITrproj CreateFromGameProject(IGameProject game) => throw new NotImplementedException();
+		int fileVersion = ReadProjectFileVersion(document);
 
-	public bool SaveTrprojToFile(ITrproj trproj, string filePath) => throw new NotImplementedException();
+		return fileVersion switch
+		{
+			1 => ReadFileExact<TrprojV1>(trprojFilePath),
+			2 => ReadFileExact<TrprojV2>(trprojFilePath),
+			_ => null
+		};
+	}
+
+	public T? ReadFileExact<T>(string filePath) where T : class, ITrproj
+	{
+		using var reader = new StreamReader(filePath);
+		var project = new XmlSerializer(typeof(T)).Deserialize(reader) as T;
+
+		if (project != null)
+		{
+			string projectDirectory = Path.GetDirectoryName(filePath)!;
+			MakePathsAbsolute(project, projectDirectory);
+		}
+
+		return project;
+	}
+
+	public ITrproj CreateFromGameProject(IGameProject game)
+	{
+		var trproj = new TrprojV2
+		{
+			ProjectFile = game.ProjectFile,
+			ProjectName = game.Name,
+			ScriptDirectoryPath = game.ScriptDirectory.FullName,
+			MapsDirectoryPath = game.MapsDirectory.FullName,
+			TRNGPluginsDirectoryPath = game.TRNGPluginsDirectory?.FullName
+		};
+
+		foreach (MapProject map in game.Maps)
+		{
+			trproj.MapRecords.Add(new MapRecordV2
+			{
+				Name = map.Name,
+				RootDirectoryPath = map.RootDirectoryPath,
+				StartupFileName = map.StartupFile?.Name
+			});
+		}
+
+		return trproj;
+	}
+
+	public bool SaveToFile(ITrproj trproj, string filePath, bool makePathsRelative = true)
+	{
+		if (makePathsRelative)
+			MakePathsRelative(trproj, Path.GetDirectoryName(filePath)!);
+
+		XmlUtils.SaveXmlFile(filePath, trproj);
+		return true;
+	}
+
+	public void WriteToFile(string filePath, TrprojV2 trproj, bool makePathsRelative = true)
+	{
+		if (makePathsRelative)
+			MakePathsRelative(trproj, Path.GetDirectoryName(filePath)!);
+
+		var settings = new XmlWriterSettings
+		{
+			Indent = true,
+			IndentChars = "\t",
+			NewLineOnAttributes = true
+		};
+
+		using var writer = XmlWriter.Create(filePath, settings);
+		var serializer = new XmlSerializer(typeof(TrprojV2));
+		serializer.Serialize(writer, trproj);
+	}
 
 	#region Path translation
 
@@ -168,4 +242,27 @@ public sealed class TrprojService : ITrprojService
 	}
 
 	#endregion Path translation
+
+	private int ReadProjectFileVersion(XmlDocument document)
+	{
+		bool isValidDocument = document.ChildNodes.Count > 1;
+
+		if (!isValidDocument)
+			return -1;
+
+		XmlNode? projectNode = document.ChildNodes[1];
+		XmlAttribute? fileVersionAttribute = projectNode?.Attributes?["ProjectFileVersion"];
+		string? fileVersionString = fileVersionAttribute?.Value;
+
+		if (string.IsNullOrEmpty(fileVersionString))
+		{
+			bool isV1RootName = projectNode?.Name == "Project";
+			return isV1RootName ? 1 : -1;
+		}
+
+		if (int.TryParse(fileVersionString, out int fileVersion))
+			return fileVersion;
+
+		return -1;
+	}
 }

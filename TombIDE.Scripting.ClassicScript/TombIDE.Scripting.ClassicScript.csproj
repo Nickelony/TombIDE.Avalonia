@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TombIDE.Core\TombIDE.Core.csproj" />
     <ProjectReference Include="..\TombIDE.Scripting.Core\TombIDE.Scripting.Core.csproj" />
   </ItemGroup>
 

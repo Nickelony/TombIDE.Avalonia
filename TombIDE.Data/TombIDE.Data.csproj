@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TombIDE.Common\TombIDE.Common.csproj" />
+  </ItemGroup>
+
 </Project>

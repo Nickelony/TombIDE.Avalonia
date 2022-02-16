@@ -1,11 +1,24 @@
-﻿using TombIDE.Core.Models;
-using TombIDE.Services.Generic;
+﻿using TombIDE.Core.Models.References;
 
 namespace TombIDE.Services;
 
-public interface IMnemonicConstantsService : IXmlDatabaseService
+/// <summary>
+/// Defines a service for retrieving mnemonic constants from different sources.
+/// </summary>
+public interface IMnemonicConstantsService
 {
-	IEnumerable<MnemonicConstant> GetLocalMnemonicConstants();
-	IEnumerable<MnemonicConstant> GetMnemonicConstantsFromPlugin(TRNGPlugin plugin);
-	IEnumerable<MnemonicConstant> GetMnemonicConstantsFromPlugins(TRNGPlugin[] plugins);
+	/// <summary>
+	/// Retrieves constants from a XML database file.
+	/// </summary>
+	IEnumerable<MnemonicConstant> GetMnemonicConstantsFromXml(FileInfo xmlFile);
+
+	/// <summary>
+	/// Retrieves constants from a plugin's .script file.
+	/// </summary>
+	IEnumerable<MnemonicConstant> GetMnemonicConstantsFromPlugin(DirectoryInfo pluginDirectory);
+
+	/// <summary>
+	/// Retrieves constants from multiple plugins.
+	/// </summary>
+	IEnumerable<MnemonicConstant> GetMnemonicConstantsFromPlugins(DirectoryInfo[] pluginDirectories);
 }
