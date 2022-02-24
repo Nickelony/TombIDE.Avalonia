@@ -1,5 +1,4 @@
-﻿using TombIDE.Data.Models;
-using TombIDE.Windows;
+﻿using TombIDE.Windows;
 
 namespace TombIDE.Start;
 

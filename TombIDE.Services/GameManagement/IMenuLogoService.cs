@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using TombIDE.Core.Models;
 
-namespace TombIDE.Services;
+namespace TombIDE.Services.GameManagement;
 
 public interface IMenuLogoService
 {

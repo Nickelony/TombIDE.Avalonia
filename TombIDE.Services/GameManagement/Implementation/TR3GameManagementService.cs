@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using TombIDE.Core.Models;
 
-namespace TombIDE.Services.Implementations;
+namespace TombIDE.Services.GameManagement;
 
 public sealed class TR3GameManagementService : IGameManagementService, ILauncherIconService, ISplashScreenService,
 	IInitialLoadingScreenService, IMenuBackgroundService

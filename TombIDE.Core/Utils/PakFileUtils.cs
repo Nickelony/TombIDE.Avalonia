@@ -1,7 +1,10 @@
-﻿namespace TombIDE.Services.Implementations;
+﻿namespace TombIDE.Core.Utils;
 
-public sealed class PakFileService : IPakFileService
+public class PakFileUtils
 {
+	/// <returns>
+	/// Raw image bytes (pixel array) from a .pak file.
+	/// </returns>
 	public byte[] ReadFile(string filePath)
 	{
 		using var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read);
@@ -17,9 +20,12 @@ public sealed class PakFileService : IPakFileService
 		return outStream.ToArray();
 	}
 
-	public void WriteToFile(string filePath, byte[] pixelArray)
+	/// <summary>
+	/// Writes bitmap data into a .pak file.
+	/// </summary>
+	public void WriteToFile(string filePath, byte[] bitmapData)
 	{
-		byte[] pakFileData = CompressData(pixelArray);
+		byte[] pakFileData = CompressData(bitmapData);
 		File.WriteAllBytes(filePath, pakFileData);
 	}
 

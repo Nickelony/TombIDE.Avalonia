@@ -1,4 +1,4 @@
-﻿namespace TombIDE.Services;
+﻿namespace TombIDE.Services.GameManagement;
 
 /// <summary>
 /// Defines a game manager which is responsible for doing things like changing the game icon, splash screen etc.

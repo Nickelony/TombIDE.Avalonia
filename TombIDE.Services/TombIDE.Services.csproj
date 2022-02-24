@@ -14,4 +14,9 @@
     <ProjectReference Include="..\TombIDE.Core\TombIDE.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Scripting\ClassicScript\" />
+    <Folder Include="Scripting\Lua\" />
+  </ItemGroup>
+
 </Project>

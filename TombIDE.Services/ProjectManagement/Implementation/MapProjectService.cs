@@ -20,10 +20,10 @@ public sealed class MapProjectService : IMapProjectService
 		=> map.RootDirectory.GetFiles("*.prj2", SearchOption.TopDirectoryOnly);
 
 	public FileInfo[] GetPrj2Files(IMapProject map)
-		=> Array.FindAll(GetAllPrj2Files(map), file => !Prj2Utils.IsBackupFile(file.FullName));
+		=> Array.FindAll(GetAllPrj2Files(map), file => !Prj2FileUtils.IsBackupFile(file.FullName));
 
 	public FileInfo[] GetBackupFiles(IMapProject map)
-		=> Array.FindAll(GetAllPrj2Files(map), file => Prj2Utils.IsBackupFile(file.FullName));
+		=> Array.FindAll(GetAllPrj2Files(map), file => Prj2FileUtils.IsBackupFile(file.FullName));
 
 	public FileInfo GetMostRecentlyModifiedPrj2File(IMapProject map)
 	{

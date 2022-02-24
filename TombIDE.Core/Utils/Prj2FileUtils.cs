@@ -1,6 +1,6 @@
 ﻿namespace TombIDE.Core.Utils;
 
-public static class Prj2Utils
+public static class Prj2FileUtils
 {
 	public static bool IsBackupFile(string prj2FilePath)
 	{

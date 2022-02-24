@@ -42,7 +42,7 @@ public sealed class TrprojService : ITrprojService
 
 	public ITrproj CreateFromFile(string trprojFilePath)
 	{
-		if (!XmlUtils.IsXmlDocument(trprojFilePath, out XmlDocument document))
+		if (!XmlFileUtils.IsXmlDocument(trprojFilePath, out XmlDocument document))
 			return null;
 
 		int fileVersion = ReadProjectFileVersion(document);
@@ -98,7 +98,7 @@ public sealed class TrprojService : ITrprojService
 		if (makePathsRelative)
 			MakePathsRelative(trproj, Path.GetDirectoryName(filePath)!);
 
-		XmlUtils.SaveXmlFile(filePath, trproj);
+		XmlFileUtils.SaveXmlFile(filePath, trproj);
 		return true;
 	}
 

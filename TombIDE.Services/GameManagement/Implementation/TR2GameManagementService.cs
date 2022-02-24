@@ -1,9 +1,9 @@
 ﻿using System.Drawing;
 using TombIDE.Core.Models;
 
-namespace TombIDE.Services.Implementations;
+namespace TombIDE.Services.GameManagement;
 
-public sealed class TR1GameManagementService : IGameManagementService, ILauncherIconService, ISplashScreenService,
+public sealed class TR2GameManagementService : IGameManagementService, ILauncherIconService, ISplashScreenService,
 	IInitialLoadingScreenService, IMenuBackgroundService
 {
 	public void ChangeInitialLoadingScreen(IGameProject game, Bitmap bitmap) => throw new NotImplementedException();

@@ -1,5 +1,4 @@
-﻿using TombIDE.Core.Models;
-using TombIDE.Scripting.ClassicScript.Utils;
+﻿using TombIDE.Scripting.ClassicScript.Utils;
 
 namespace TombIDE.Scripting.ClassicScript.Extensions;
 

@@ -1,6 +1,6 @@
 ﻿namespace TombIDE.Core.Utils;
 
-public static class XmlUtils
+public static class XmlFileUtils
 {
 	public static bool IsXmlDocument(string filePath, out XmlDocument document)
 	{
@@ -17,9 +17,9 @@ public static class XmlUtils
 		}
 	}
 
-	public static T ReadXmlFile<T>(string filePath)
+	public static T ReadXmlFile<T>(string filePath, XmlReaderSettings? settings = null)
 	{
-		using var reader = new StreamReader(filePath);
+		using var reader = XmlReader.Create(filePath, settings);
 		var serializer = new XmlSerializer(typeof(T));
 		return (T)serializer.Deserialize(reader)!;
 	}
