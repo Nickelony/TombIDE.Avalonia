@@ -1,10 +1,10 @@
 ﻿using System.Drawing;
 using TombIDE.Core.Models;
 
-namespace TombIDE.Services.GameManagement;
+namespace TombIDE.Services;
 
 public interface ILauncherIconService
 {
 	Icon GetLauncherIcon(IGameProject game);
-	void ChangeLauncherIcon(IGameProject game, Icon icon);
+	void SetLauncherIcon(IGameProject game, Icon icon);
 }

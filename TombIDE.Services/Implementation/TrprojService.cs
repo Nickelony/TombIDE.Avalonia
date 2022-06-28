@@ -1,6 +1,7 @@
 ﻿using System.Xml;
 using System.Xml.Serialization;
 using TombIDE.Core.Formats;
+using TombIDE.Core.Models;
 using TombIDE.Core.Utils;
 using MapRecordV1 = TombIDE.Formats.Trproj.V1.MapRecord;
 using MapRecordV2 = TombIDE.Formats.Trproj.V2.MapRecord;
@@ -264,5 +265,20 @@ public sealed class TrprojService : ITrprojService
 			return fileVersion;
 
 		return -1;
+	}
+
+	public ITrproj CreateFromGameProject(IGameProject game)
+	{
+		throw new NotImplementedException();
+	}
+
+	public void SaveToFile(string filePath, ITrproj trproj, bool makePathsRelative = true)
+	{
+		throw new NotImplementedException();
+	}
+
+	public Core.Formats.Trproj.V2.Trproj ConvertV1ToV2(Core.Formats.Trproj.V1.Trproj trprojV1)
+	{
+		throw new NotImplementedException();
 	}
 }

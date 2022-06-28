@@ -7,16 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Scripting\**" />
+    <EmbeddedResource Remove="Scripting\**" />
+    <None Remove="Scripting\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TombIDE.Core\TombIDE.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Scripting\ClassicScript\" />
-    <Folder Include="Scripting\Lua\" />
   </ItemGroup>
 
 </Project>

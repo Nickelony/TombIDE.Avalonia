@@ -46,7 +46,7 @@ public interface IMapProjectService
 
 	/// <returns>
 	/// A collection of all files of the .prj2 format from the map's root directory.<br />
-	/// This includes both <b>normal</b> files and <b>backup</b> files.
+	/// This includes both <b>normal</b> .prj2 files and <b>backup</b> files.
 	/// </returns>
 	IEnumerable<FileInfo> GetAllPrj2Files(IMapProject map);
 

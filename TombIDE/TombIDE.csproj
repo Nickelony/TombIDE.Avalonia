@@ -42,19 +42,15 @@
     <AvaloniaResource Include="Assets\Images\WT.png" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.10.11" />
-    <PackageReference Include="Avalonia.Desktop" Version="0.10.11" />
+    <PackageReference Include="Avalonia" Version="0.10.14" />
+    <PackageReference Include="Avalonia.Desktop" Version="0.10.14" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.11" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.11" />
-    <PackageReference Include="Avalonia.ReactiveUI.Events" Version="0.10.11" />
+    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="0.10.14" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.10.14" />
+    <PackageReference Include="Avalonia.ReactiveUI.Events" Version="0.10.14" />
     <PackageReference Include="AvaloniaSpacedGrid" Version="0.10.4" />
-    <PackageReference Include="FluentAvaloniaUI" Version="1.1.8" />
-    <PackageReference Include="ReactiveUI.Fody" Version="17.1.9" />
+    <PackageReference Include="ReactiveUI.Fody" Version="18.0.10" />
     <PackageReference Include="ReactiveUI.Validation" Version="2.2.1" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\TombIDE.Services\TombIDE.Services.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Controls\ImageTextView.axaml.cs">
@@ -99,10 +95,12 @@
     <Folder Include="MapManager\" />
     <Folder Include="ProjectManager\Pages\" />
     <Folder Include="ScriptingStudio\Docks\" />
-    <Folder Include="Styles\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TombIDE.Core\TombIDE.Core.csproj" />
   </ItemGroup>
   <ItemGroup>
     <AvaloniaXaml Update="Controls\ImageTextView.axaml">

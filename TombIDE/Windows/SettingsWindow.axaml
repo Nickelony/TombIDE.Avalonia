@@ -16,26 +16,26 @@
 			MaxWidth="500"
 			HorizontalAlignment="Left"
 			Header="Language">
-			<ui:ComboBox
+			<ComboBox
 				Grid.Column="1"
 				HorizontalAlignment="Stretch"
 				SelectedIndex="{Binding SelectedLanguageIndex}">
 				<TextBlock Text="English" />
 				<TextBlock Text="Polski" />
-			</ui:ComboBox>
+			</ComboBox>
 		</settings:SettingsSection>
 		<settings:SettingsSection
 			MaxWidth="500"
 			HorizontalAlignment="Left"
 			Header="Theme">
-			<ui:ComboBox
+			<ComboBox
 				Grid.Column="1"
 				HorizontalAlignment="Stretch"
 				SelectedIndex="{Binding SelectedLanguageIndex}">
 				<TextBlock Text="Use system default" />
 				<TextBlock Text="Light" />
 				<TextBlock Text="Dark" />
-			</ui:ComboBox>
+			</ComboBox>
 		</settings:SettingsSection>
 	</settings:SettingsPage>
 </Window>

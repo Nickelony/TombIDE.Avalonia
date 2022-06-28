@@ -20,7 +20,10 @@ public class GameProjectService : IGameProjectService
 	private readonly IMapProjectService _mapProjectService;
 	private readonly ITRNGPluginService _trngPluginService;
 
-	public GameProjectService(ITrprojService trprojService, IMapProjectService mapProjectService, ITRNGPluginService trngPluginService)
+	public GameProjectService(
+		ITrprojService trprojService,
+		IMapProjectService mapProjectService,
+		ITRNGPluginService trngPluginService)
 	{
 		_trprojService = trprojService;
 		_mapProjectService = mapProjectService;
@@ -31,12 +34,14 @@ public class GameProjectService : IGameProjectService
 
 	#region Factory
 
-	public IGameProject CreateNewProject(string name, string rootDirectoryPath,
-		string scriptDirectoryPath, string mapsDirectoryPath, string? trngPluginsDirectoryPath = null,
+	public IGameProject CreateNewProject(
+		string name, string rootDirectoryPath, string scriptDirectoryPath,
+		string mapsDirectoryPath, string? trngPluginsDirectoryPath = null,
 		IEnumerable<DirectoryInfo>? externalMapSubdirectories = null)
 	{
-		return new GameProject(name, rootDirectoryPath,
-			scriptDirectoryPath, mapsDirectoryPath, trngPluginsDirectoryPath,
+		return new GameProject(
+			name, rootDirectoryPath, scriptDirectoryPath,
+			mapsDirectoryPath, trngPluginsDirectoryPath,
 			externalMapSubdirectories);
 	}
 
@@ -92,15 +97,11 @@ public class GameProjectService : IGameProjectService
 
 	public IEnumerable<IMapProject> GetAllMaps(IGameProject game)
 	{
-		foreach (DirectoryInfo directory in game.MapsDirectory.GetDirectories("*", SearchOption.TopDirectoryOnly))
-		{
-			IMapProject map = _mapProjectService.CreateFromDirectory(directory.FullName);
+		IEnumerable<DirectoryInfo> allMapDirectories =
+			game.MapsDirectory.GetDirectories("*", SearchOption.TopDirectoryOnly)
+			.Concat(game.ExternalMapSubdirectories);
 
-			if (_mapProjectService.IsValidProject(map))
-				yield return map;
-		}
-
-		foreach (DirectoryInfo directory in game.ExternalMapSubdirectories)
+		foreach (DirectoryInfo directory in allMapDirectories)
 		{
 			IMapProject map = _mapProjectService.CreateFromDirectory(directory.FullName);
 

@@ -1,4 +1,6 @@
-﻿namespace TombIDE.Services.Implementations;
+﻿using TombIDE.Core.Extensions;
+
+namespace TombIDE.Services.Implementations;
 
 public sealed class TRNGPluginService : ITRNGPluginService
 {
@@ -89,5 +91,10 @@ public sealed class TRNGPluginService : ITRNGPluginService
 
 		string destFilePath = Path.Combine(ngcDirectoryPath, scriptFile.Name);
 		scriptFile.CopyTo(destFilePath, true);
+	}
+
+	public bool IsValidPluginDirectory(DirectoryInfo pluginDirectory)
+	{
+		throw new NotImplementedException();
 	}
 }

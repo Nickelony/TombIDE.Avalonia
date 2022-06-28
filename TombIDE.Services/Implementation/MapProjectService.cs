@@ -46,4 +46,9 @@ public sealed class MapProjectService : IMapProjectService
 	IEnumerable<FileInfo> IMapProjectService.GetAllPrj2Files(IMapProject map) => throw new NotImplementedException();
 
 	public void SaveProject(IMapProject map) => throw new NotImplementedException();
+
+	IMapProject IMapProjectService.CreateFromDirectory(string mapSubdirectoryPath)
+	{
+		throw new NotImplementedException();
+	}
 }

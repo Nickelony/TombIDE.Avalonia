@@ -1,8 +1,7 @@
 <Styles
 	xmlns="https://github.com/avaloniaui"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	xmlns:controls="using:TombIDE.Controls"
-	xmlns:ui="using:FluentAvalonia.UI.Controls">
+	xmlns:controls="using:TombIDE.Controls">
 	<Design.PreviewWith>
 		<controls:ImageTextView
 			Width="160"
@@ -23,7 +22,7 @@
 						Height="{TemplateBinding IconHeight}"
 						Margin="{TemplateBinding IconMargin}"
 						Source="{TemplateBinding ImageSource}" />
-					<ui:PathIcon
+					<Path
 						Name="PART_PathIcon"
 						Width="{TemplateBinding IconWidth}"
 						Height="{TemplateBinding IconHeight}"

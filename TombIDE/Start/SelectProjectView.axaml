@@ -25,28 +25,16 @@
 			HorizontalAlignment="Right"
 			VerticalAlignment="Stretch"
 			Command="{Binding ShowSettings}">
-			<ui:PathIcon Data="{StaticResource settings_regular}" />
+			<Path Data="{StaticResource settings_regular}" />
 		</Button>
 
 		<TreeView Grid.Row="1">
-			<TreeView.Styles>
-				<Style Selector="Border">
-					<Setter Property="CornerRadius" Value="{DynamicResource ControlCornerRadius}" />
-					<Setter Property="Background" Value="{DynamicResource ButtonBackground}" />
-				</Style>
-				<Style Selector="TreeViewItem /template/ Border#SelectionIndicator">
-					<Setter Property="Background" Value="{DynamicResource CheckBoxCheckBackgroundFillChecked}" />
-				</Style>
-				<Style Selector="TreeViewItem:selected /template/ Border#PART_LayoutRoot">
-					<Setter Property="Background" Value="{DynamicResource ControlStrongFillColorDisabled}" />
-				</Style>
-			</TreeView.Styles>
 			<TreeView.ItemTemplate>
 				<DataTemplate>
 					<StackPanel Orientation="Horizontal">
 						<Image
 							Width="36"
-							Margin="-24,4,8,4"
+							Margin="-12,4,8,4"
 							Source="avares://TombIDE/Assets/Images/flep.png" />
 						<TextBlock VerticalAlignment="Center" Text="Test project" />
 					</StackPanel>

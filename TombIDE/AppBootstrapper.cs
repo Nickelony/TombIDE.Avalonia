@@ -1,5 +1,4 @@
 ﻿using Splat;
-using TombIDE.Services;
 
 namespace TombIDE;
 
@@ -12,7 +11,7 @@ public class AppBootstrapper
 	{
 		IMutableDependencyResolver mutable = Locator.CurrentMutable;
 
-		mutable.RegisterConstant(() => new TrprojDbService(""), typeof(ITrprojService));
-		mutable.RegisterConstant(() => new MnemonicConstantsProvider(""), typeof(ITrprojService));
+		//mutable.RegisterConstant(() => new TrprojDbService(""), typeof(ITrprojService));
+		//mutable.RegisterConstant(() => new MnemonicConstantsProvider(""), typeof(ITrprojService));
 	}
 }

@@ -32,8 +32,15 @@
 	</Application.Resources>
 
 	<Application.Styles>
-		<sty:FluentAvaloniaTheme />
-
+		<StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml" />
+		<StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseDark.xaml" />
+		
+		<StyleInclude Source="avares://TombIDE/Styles/Accents/DarkUI.axaml" />
+		<StyleInclude Source="avares://TombIDE/Styles/Controls/DarkWindow.axaml" />
+		<StyleInclude Source="avares://TombIDE/Styles/Controls/DarkButton.axaml" />
+		<StyleInclude Source="avares://TombIDE/Styles/Controls/DarkCheckBox.axaml" />
+		
+		
 		<StyleInclude Source="avares://TombIDE/Controls/ImageTextView.axaml" />
 		<StyleInclude Source="avares://TombIDE/Controls/LogoView.axaml" />
 		<StyleInclude Source="avares://TombIDE/Controls/Settings/SettingsPage.axaml" />

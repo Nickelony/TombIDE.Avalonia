@@ -4,7 +4,7 @@ namespace TombIDE.Start;
 
 public class SelectProjectViewModel : ReactiveObject
 {
-	[Reactive] public ObservableCollection<GameProjectRecord> RecentProjects { get; set; }
+	[Reactive] public ObservableCollection<string> RecentProjects { get; set; }
 	[Reactive] public bool RememberProject { get; set; }
 
 	public ICommand ShowSettings { get; }

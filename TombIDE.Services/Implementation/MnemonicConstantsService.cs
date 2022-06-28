@@ -1,4 +1,7 @@
-﻿namespace TombIDE.Services.Implementations;
+﻿using TombIDE.Core.Extensions;
+using TombIDE.Core.Models.References;
+
+namespace TombIDE.Services.Implementations;
 
 public sealed class MnemonicConstantsService : IMnemonicConstantsService
 {
@@ -9,11 +12,13 @@ public sealed class MnemonicConstantsService : IMnemonicConstantsService
 
 	public IEnumerable<MnemonicConstant> GetMnemonicConstantsFromXml(FileInfo xmlFile)
 	{
-		IEnumerable<MnemonicConstantXmlRecord> records =
-			XmlUtils.ReadXmlFile<IEnumerable<MnemonicConstantXmlRecord>>(xmlFile.FullName);
+		return null;
 
-		foreach (MnemonicConstantXmlRecord record in records)
-			yield return new MnemonicConstant(record.Name, record.DecimalValue, record.Description);
+		//IEnumerable<MnemonicConstantXmlRecord> records =
+		//	XmlUtils.ReadXmlFile<IEnumerable<MnemonicConstantXmlRecord>>(xmlFile.FullName);
+
+		//foreach (MnemonicConstantXmlRecord record in records)
+		//	yield return new MnemonicConstant(record.Name, record.DecimalValue, record.Description);
 	}
 
 	public IEnumerable<MnemonicConstant> GetMnemonicConstantsFromPlugin(DirectoryInfo pluginDirectory)
